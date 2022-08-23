@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
+    <ClInclude Include="..\virtual_disk\pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -151,7 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h" />
+    <ClInclude Include="..\virtual_disk\pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
