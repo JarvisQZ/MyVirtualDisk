@@ -18,12 +18,66 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="my_file_base.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="my_file.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="my_dir.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="my_virtual_disk.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="command.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="command_factory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="command_invoker.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dir_command.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="virtual_disk.cpp">
+    <ClCompile Include="my_file_base.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="my_file.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="my_virtual_disk.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="my_dir.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="command.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="command_factory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="command_invoker.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="dir_command.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

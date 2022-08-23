@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{BA9A88C6-E5C3-49C4-AD7C-4BD20813C6CC}</ProjectGuid>
+    <ProjectGuid>{25C27076-5FB9-45B1-92FC-743930235684}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>virtualdisk</RootNamespace>
+    <RootNamespace>virtualdos</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -91,7 +91,6 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -152,34 +151,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="command.h" />
-    <ClInclude Include="command_invoker.h" />
-    <ClInclude Include="command_factory.h" />
-    <ClInclude Include="dir_command.h" />
-    <ClInclude Include="my_virtual_disk.h" />
-    <ClInclude Include="my_dir.h" />
-    <ClInclude Include="my_file.h" />
-    <ClInclude Include="my_file_base.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="command.cpp" />
-    <ClCompile Include="command_invoker.cpp" />
-    <ClCompile Include="command_factory.cpp" />
-    <ClCompile Include="dir_command.cpp" />
-    <ClCompile Include="my_dir.cpp" />
-    <ClCompile Include="my_virtual_disk.cpp" />
-    <ClCompile Include="my_file.cpp" />
-    <ClCompile Include="my_file_base.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="utils.cpp" />
+    <ClCompile Include="virtual_dos.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
