@@ -6,7 +6,31 @@ CommandInvoker::CommandInvoker()
 {
 }
 
+CommandInvoker::CommandInvoker(Command * command)
+	:m_command(command)
+{
+}
+
 
 CommandInvoker::~CommandInvoker()
 {
+	if (m_command != nullptr)
+	{
+		delete m_command;
+		m_command = nullptr;
+	}
+}
+
+void CommandInvoker::SetCommand(Command * command)
+{
+	this->m_command = command;
+}
+
+void CommandInvoker::RunCommand(MyVirtualDisk * virtual_disk)
+{
+	if (this->m_command->IsCommandCorrect())
+	{
+		// run
+		this->m_command->Execute(virtual_disk);
+	}
 }

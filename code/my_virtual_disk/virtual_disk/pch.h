@@ -11,10 +11,16 @@
 
 // TODO: 添加要在此处预编译的标头
 #include <Windows.h>
+#include <boost/algorithm/string.hpp>
+#include <memory>
+#include <algorithm>
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 #include <string>
 #include <map>
 #include <vector>
 #include <chrono>
 #include <ctime>
+#include <mutex>
 #endif //PCH_H

@@ -2,12 +2,55 @@
 //
 
 #include "pch.h"
+#include "my_virtual_disk.h"
+#include "command_factory.h"
+#include "command_invoker.h"
+
+void test()
+{
+	// 创建虚拟磁盘对象
+	MyVirtualDisk *virtual_disk = MyVirtualDisk::GetInstance();
+
+	// 创建工厂
+	CommandFactory *command_factory = new CommandFactory();
+
+	// 创建命令调用
+	CommandInvoker *command_invoker = new CommandInvoker();
+
+	std::string input;
+	Command* command;
+
+	// 
+	while (!virtual_disk->GetQuitFlag())
+	{
+		std::cout << virtual_disk->GetCurrentDir()->GetPath() << "\\>";
+		std::getline(std::cin, input);
+
+		command = command_factory->BuildCommand(input, virtual_disk->GetCurrentDir());
+
+		if (command)
+		{
+			command_invoker->SetCommand(command);
+			command->Execute(virtual_disk);
+		}
+		
+		delete command;
+		command = nullptr;
+	}
+
+
+	// 清理
+	delete command_factory;
+	command_factory = nullptr;
+
+	delete command_invoker;
+	command_invoker = nullptr;
+}
 
 int main()
 {
-	auto p1 = std::make_unique<std::string>("aosidjf");
-	std::unique_ptr<int> p2(new int);
-	std::cout << p2 << "\n";
+	test();
+	return 0;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

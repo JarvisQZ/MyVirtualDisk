@@ -1,25 +1,34 @@
 #pragma once
-
-enum class FileType
-{
-	DIR,
-	OTHER
-};
-
+#include "file_type.h"
+#include "utils.h"
 class MyFileBase
 {
 public:
 	MyFileBase();
+	MyFileBase(std::string name, std::string path, FileType file_type);
 	virtual ~MyFileBase();
 
-protected:
-	std::size_t m_size;
-	std::string m_name;
-	std::string m_path;
-	FileType m_type;
+	std::string GetName() const;
+	void SetName(std::string name);
+	std::string GetPath() const;
+	void SetPath(std::string path);
+	FileType GetType() const;
+	void SetType(FileType file_type);
+	std::size_t GetSize() const;
+	void SetSize(std::size_t size);
+	std::string GetLastModifiedTime() const;
+	void SetLastModifiedTime(std::string last_modified_time);
 
-	std::string m_last_modified_date;
-	std::string m_last_modified_time;
+	MyFileBase & GetParentDir() const;
+	void SetParentDir(MyFileBase *parent_dir);
 
-	std::unique_ptr<MyFileBase> m_parent_dir;
+private:
+	std::size_t m_size = 0;
+	std::string m_name = "";
+	std::string m_path = "";
+	FileType m_type = FileType::OTHER;
+
+	std::string m_last_modified_time = Utils::GetNowTimeToString();
+
+	std::unique_ptr<MyFileBase> m_parent_dir = nullptr;
 };

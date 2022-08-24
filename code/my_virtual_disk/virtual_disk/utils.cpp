@@ -3,12 +3,26 @@
 
 std::string Utils::GetNowTimeToString()
 {
-	time_t now = time(0);
+	std::ostringstream buf;
+	SYSTEMTIME sys_time;
+	GetLocalTime(&sys_time);
 
-	tm *ltm = localtime(&now);
+	buf << sys_time.wYear << "/" 
+		<< std::setfill('0') << std::setw(2) << sys_time.wMonth << "/"
+		<< std::setfill('0') << std::setw(2) << sys_time.wDay 
+		<< "  " // 两个空格
+		<< std::setfill('0') << std::setw(2) << sys_time.wHour << ":" 
+		<< std::setfill('0') << std::setw(2) << sys_time.wMinute
+		<< std::endl;
 
-	char tempBuf[255];
-
-	std::strftime(tempBuf,255, "%Y-%m-%d  %H:%M:%S", ltm);
-	return tempBuf;
+	return buf.str();
 }
+
+std::string Utils::GetCommand(std::string command)
+{
+	std::vector<std::string> command_list;
+	boost::split(command_list, command, boost::is_space());
+
+	return command_list[0];
+}
+

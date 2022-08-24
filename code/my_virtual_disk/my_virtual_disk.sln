@@ -4,11 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "virtual_disk", "virtual_disk\virtual_disk.vcxproj", "{BA9A88C6-E5C3-49C4-AD7C-4BD20813C6CC}"
-	ProjectSection(ProjectDependencies) = postProject
-		{25C27076-5FB9-45B1-92FC-743930235684} = {25C27076-5FB9-45B1-92FC-743930235684}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "virtual_dos", "virtual_dos\virtual_dos.vcxproj", "{25C27076-5FB9-45B1-92FC-743930235684}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,14 +21,6 @@ Global
 		{BA9A88C6-E5C3-49C4-AD7C-4BD20813C6CC}.Release|x64.Build.0 = Release|x64
 		{BA9A88C6-E5C3-49C4-AD7C-4BD20813C6CC}.Release|x86.ActiveCfg = Release|Win32
 		{BA9A88C6-E5C3-49C4-AD7C-4BD20813C6CC}.Release|x86.Build.0 = Release|Win32
-		{25C27076-5FB9-45B1-92FC-743930235684}.Debug|x64.ActiveCfg = Debug|x64
-		{25C27076-5FB9-45B1-92FC-743930235684}.Debug|x64.Build.0 = Debug|x64
-		{25C27076-5FB9-45B1-92FC-743930235684}.Debug|x86.ActiveCfg = Debug|Win32
-		{25C27076-5FB9-45B1-92FC-743930235684}.Debug|x86.Build.0 = Debug|Win32
-		{25C27076-5FB9-45B1-92FC-743930235684}.Release|x64.ActiveCfg = Release|x64
-		{25C27076-5FB9-45B1-92FC-743930235684}.Release|x64.Build.0 = Release|x64
-		{25C27076-5FB9-45B1-92FC-743930235684}.Release|x86.ActiveCfg = Release|Win32
-		{25C27076-5FB9-45B1-92FC-743930235684}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
