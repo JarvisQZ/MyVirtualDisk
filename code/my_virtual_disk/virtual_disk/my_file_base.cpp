@@ -35,9 +35,14 @@ void MyFileBase::SetPath(std::string path)
 	this->m_path = path;
 }
 
-std::string MyFileBase::GetType()
+std::string MyFileBase::GetTypeToString() const
 {
 	return this->m_type == FileType::DIR ? "<DIR>" : "     ";
+}
+
+FileType MyFileBase::GetType() const
+{
+	return this->m_type;
 }
 
 void MyFileBase::SetType(FileType file_type)

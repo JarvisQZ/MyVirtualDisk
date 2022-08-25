@@ -27,9 +27,9 @@ void MdCommand::Execute(MyVirtualDisk * virtual_disk)
 
 		for (auto child : children_dir)
 		{
-			if (file_name == child.first)
+			if (file_name == child.first && child.second->GetType() == FileType::DIR)
 			{
-				std::cout << "重名了" << std::endl;
+				std::cout << "目录重名了" << std::endl;
 				return;
 			}
 		}
@@ -54,6 +54,11 @@ bool MdCommand::IsCommandCorrect()
 	{
 		std::cout << "命令语法不正确" << std::endl;
 		std::cout << std::endl;
+		return false;
+	}
+	else if (command_parameters[0][0] == '/' && command_parameters[0][1] == '?')
+	{
+		std::cout << "help" << std::endl;
 		return false;
 	}
 

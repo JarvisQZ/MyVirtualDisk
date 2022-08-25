@@ -37,7 +37,7 @@ std::map<std::string, MyFileBase*> MyDir::GetDirChildren()
 
 	for (auto children : this->GetChildren())
 	{
-		if (children.second->GetType() == "<DIR>")
+		if (children.second->GetTypeToString() == "<DIR>")
 		{
 			dir_children.insert_or_assign(children.first, children.second);
 		}
@@ -58,8 +58,8 @@ void MyDir::PrintFileAndDir()
 
 	if (this->GetParentDir() != this)
 	{
-		std::cout << this->GetLastModifiedTime() << this->GetType() << "    " << std::setw(10) << this->GetSize() << " ." << std::endl;
-		std::cout << this->GetLastModifiedTime() << this->GetType() << "    " << std::setw(10) << this->GetSize() << " .." << std::endl;
+		std::cout << this->GetLastModifiedTime() << this->GetTypeToString() << "    " << std::setw(10) << this->GetSize() << " ." << std::endl;
+		std::cout << this->GetLastModifiedTime() << this->GetTypeToString() << "    " << std::setw(10) << this->GetSize() << " .." << std::endl;
 	}
 
 	std::cout << std::endl;
@@ -67,24 +67,24 @@ void MyDir::PrintFileAndDir()
 	std::cout << std::endl;
 
 	std::cout << this->GetLastModifiedTime()
-		<< std::setfill(' ') << std::setw(9) << this->GetType()
+		<< std::setfill(' ') << std::setw(9) << this->GetTypeToString()
 		<< std::setfill(' ') << std::setw(10) << ""
 		<< " ." << std::endl;
 
 	std::cout << this->GetLastModifiedTime()
-		<< std::setfill(' ') << std::setw(9) << this->GetType()
+		<< std::setfill(' ') << std::setw(9) << this->GetTypeToString()
 		<< std::setfill(' ') << std::setw(10) << ""
 		<< " .." << std::endl;
 
 	for (auto child : this->GetChildren())
 	{
-		if (child.second->GetType() != "<DIR>")
+		if (child.second->GetTypeToString() != "<DIR>")
 		{
 			file_num++;
 			all_file_size += child.second->GetSize();
 		}
 		std::cout << child.second->GetLastModifiedTime()
-			<< std::setfill(' ') << std::setw(9) << child.second->GetType()
+			<< std::setfill(' ') << std::setw(9) << child.second->GetTypeToString()
 			<< std::setfill(' ') << std::setw(10) << child.second->GetSize()
 			<< " " << child.second->GetName() << std::endl;
 	}

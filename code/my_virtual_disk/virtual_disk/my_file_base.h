@@ -12,7 +12,8 @@ public:
 	void SetName(std::string name);
 	std::string GetPath() const;
 	void SetPath(std::string path);
-	std::string GetType();
+	std::string GetTypeToString() const;
+	FileType GetType() const;
 	void SetType(FileType file_type);
 	std::size_t GetSize() const;
 	void SetSize(std::size_t size);
