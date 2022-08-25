@@ -6,7 +6,7 @@ class NoCommand
 {
 public:
 	NoCommand();
-	NoCommand(CommandType command_type);
+	NoCommand(CommandType command_type, std::deque<std::string> command_parameters);
 	~NoCommand();
 
 	void Execute(MyVirtualDisk* virtual_disk);

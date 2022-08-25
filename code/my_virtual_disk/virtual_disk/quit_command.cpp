@@ -6,8 +6,8 @@ QuitCommand::QuitCommand()
 {
 }
 
-QuitCommand::QuitCommand(CommandType command_type)
-	:Command(command_type)
+QuitCommand::QuitCommand(CommandType command_type, std::deque<std::string> command_parameters)
+	:Command(command_type, command_parameters)
 {
 }
 

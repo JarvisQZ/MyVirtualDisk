@@ -15,4 +15,5 @@ enum class CommandType
 	MKLINK,
 	NOCommand,
 	QUIT,
+	UNKCommand,
 };

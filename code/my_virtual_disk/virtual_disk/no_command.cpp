@@ -6,8 +6,8 @@ NoCommand::NoCommand()
 {
 }
 
-NoCommand::NoCommand(CommandType command_type)
-	:Command(command_type)
+NoCommand::NoCommand(CommandType command_type, std::deque<std::string> command_parameters)
+	:Command(command_type, command_parameters)
 {
 }
 

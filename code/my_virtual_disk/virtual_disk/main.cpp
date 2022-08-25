@@ -17,23 +17,23 @@ void test()
 	// 创建命令调用
 	CommandInvoker *command_invoker = new CommandInvoker();
 
-	std::string input;
-	Command* command;
+	std::string input_command = "";
+	Command* command = nullptr;
 
 	// 
 	while (!virtual_disk->GetQuitFlag())
 	{
 		std::cout << virtual_disk->GetCurrentDir()->GetPath() << "\\>";
-		std::getline(std::cin, input);
+		std::getline(std::cin, input_command);
 
-		command = command_factory->BuildCommand(input, virtual_disk->GetCurrentDir());
+		command = command_factory->BuildCommand(input_command, virtual_disk->GetCurrentDir());
 
 		if (command)
 		{
 			command_invoker->SetCommand(command);
-			command->Execute(virtual_disk);
+			command_invoker->RunCommand(virtual_disk);
 		}
-		
+
 		delete command;
 		command = nullptr;
 	}
@@ -43,7 +43,7 @@ void test()
 	delete command_factory;
 	command_factory = nullptr;
 
-	delete command_invoker;
+	//delete command_invoker;
 	command_invoker = nullptr;
 }
 

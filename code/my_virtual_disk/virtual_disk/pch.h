@@ -20,6 +20,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <deque>
 #include <chrono>
 #include <ctime>
 #include <mutex>

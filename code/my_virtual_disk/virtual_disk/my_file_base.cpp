@@ -35,9 +35,9 @@ void MyFileBase::SetPath(std::string path)
 	this->m_path = path;
 }
 
-FileType MyFileBase::GetType() const
+std::string MyFileBase::GetType()
 {
-	return this->m_type;
+	return this->m_type == FileType::DIR ? "<DIR>" : "     ";
 }
 
 void MyFileBase::SetType(FileType file_type)
@@ -65,12 +65,12 @@ void MyFileBase::SetLastModifiedTime(std::string last_modified_time)
 	this->m_last_modified_time = last_modified_time;
 }
 
-MyFileBase & MyFileBase::GetParentDir() const
+MyFileBase * MyFileBase::GetParentDir()
 {
-	return *this->m_parent_dir;
+	return this->m_parent_dir;
 }
 
 void MyFileBase::SetParentDir(MyFileBase *parent_dir)
 {
-	this->m_parent_dir.reset(parent_dir);
+	this->m_parent_dir = parent_dir;
 }

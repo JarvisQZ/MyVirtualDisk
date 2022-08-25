@@ -3,7 +3,11 @@
 #include "my_dir.h"
 #include "utils.h"
 #include "no_command.h"
+#include "dir_command.h"
+#include "md_command.h"
 #include "quit_command.h"
+#include "cls_command.h"
+#include "unknown_command.h"
 
 CommandFactory::CommandFactory()
 {
@@ -14,18 +18,47 @@ CommandFactory::~CommandFactory()
 {
 }
 
+std::deque<std::string> GetCommandParameters(std::string command)
+{
+	std::deque<std::string> command_parameters = Utils::GetCommandParameters(command);
+	command_parameters.pop_front();
+	return command_parameters;
+}
+
+std::string GetRawCommand(std::string command)
+{
+	return Utils::GetCommandParameters(command)[0];
+}
+
 CommandType GenerateCommand(std::string command)
 {
-	CommandType command_type;
-	std::string res = Utils::GetCommand(command);
+	CommandType command_type = CommandType::UNKCommand;
+	std::string raw_command = GetRawCommand(command);
+	std::string command_lower = boost::to_lower_copy(raw_command);
 
-	if (res.size() == 0)
+	if (boost::equals("", command_lower))
 	{
 		command_type = CommandType::NOCommand;
 	}
-	else
+	else if (boost::equals("dir", command_lower))
+	{
+		command_type = CommandType::DIR;
+	}
+	else if (boost::equals("cls", command_lower))
+	{
+		command_type = CommandType::CLS;
+	}
+	else if (boost::equals("md", command_lower) || boost::equals("mkdir", command_lower))
+	{
+		command_type = CommandType::MD;
+	}
+	else if(boost::equals("quit", command_lower) || boost::equals("exit", command_lower))
 	{
 		command_type = CommandType::QUIT;
+	}
+	else
+	{
+		command_type = CommandType::UNKCommand;
 	}
 
 	return command_type;
@@ -34,13 +67,15 @@ CommandType GenerateCommand(std::string command)
 Command * CommandFactory::BuildCommand(std::string command, MyDir * dir)
 {
 	CommandType command_type = GenerateCommand(command);
+	std::deque<std::string> command_parameters = GetCommandParameters(command);
+	std::string raw_command = GetRawCommand(command);
 
 	switch (command_type)
 	{
 	case CommandType::DIR:
-		break;
+		return new DirCommand(CommandType::DIR, command_parameters);
 	case CommandType::MD:
-		break;
+		return new MdCommand(CommandType::MD, command_parameters);
 	case CommandType::RD:
 		break;
 	case CommandType::CD:
@@ -54,7 +89,7 @@ Command * CommandFactory::BuildCommand(std::string command, MyDir * dir)
 	case CommandType::MOVE:
 		break;
 	case CommandType::CLS:
-		break;
+		return new ClsCommand(CommandType::CLS, command_parameters);
 	case CommandType::SAVE:
 		break;
 	case CommandType::LOAD:
@@ -62,10 +97,10 @@ Command * CommandFactory::BuildCommand(std::string command, MyDir * dir)
 	case CommandType::MKLINK:
 		break;
 	case CommandType::NOCommand:
-		return new NoCommand();
+		return new NoCommand(CommandType::NOCommand, command_parameters);
 	case CommandType::QUIT:
-		return new QuitCommand();
+		return new QuitCommand(CommandType::QUIT, command_parameters);
 	default:
-		return new NoCommand();
+		return new UnknownCommand(CommandType::UNKCommand, raw_command);
 	}
 }

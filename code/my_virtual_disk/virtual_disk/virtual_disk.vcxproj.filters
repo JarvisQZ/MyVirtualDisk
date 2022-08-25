@@ -57,6 +57,18 @@
     <ClInclude Include="quit_command.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="cls_command.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="unknown_command.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="my_link_file.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="md_command.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -96,6 +108,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="quit_command.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cls_command.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="unknown_command.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="my_link_file.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="md_command.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

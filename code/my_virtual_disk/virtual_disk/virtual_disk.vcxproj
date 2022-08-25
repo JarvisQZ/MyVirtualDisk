@@ -92,6 +92,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp14</LanguageStandard>
+      <AdditionalOptions>/source-charset:utf-8 /execution-charset:gbk %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,12 +154,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="cls_command.h" />
     <ClInclude Include="command.h" />
     <ClInclude Include="command_invoker.h" />
     <ClInclude Include="command_factory.h" />
     <ClInclude Include="command_type.h" />
     <ClInclude Include="dir_command.h" />
     <ClInclude Include="file_type.h" />
+    <ClInclude Include="md_command.h" />
+    <ClInclude Include="my_link_file.h" />
     <ClInclude Include="my_virtual_disk.h" />
     <ClInclude Include="my_dir.h" />
     <ClInclude Include="my_file.h" />
@@ -166,13 +170,17 @@
     <ClInclude Include="no_command.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="quit_command.h" />
+    <ClInclude Include="unknown_command.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cls_command.cpp" />
     <ClCompile Include="command.cpp" />
     <ClCompile Include="command_invoker.cpp" />
     <ClCompile Include="command_factory.cpp" />
     <ClCompile Include="dir_command.cpp" />
+    <ClCompile Include="md_command.cpp" />
+    <ClCompile Include="my_link_file.cpp" />
     <ClCompile Include="my_dir.cpp" />
     <ClCompile Include="my_virtual_disk.cpp" />
     <ClCompile Include="my_file.cpp" />
@@ -186,6 +194,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="quit_command.cpp" />
+    <ClCompile Include="unknown_command.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

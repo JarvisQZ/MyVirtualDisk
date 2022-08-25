@@ -6,7 +6,7 @@ class QuitCommand :
 {
 public:
 	QuitCommand();
-	QuitCommand(CommandType command_type);
+	QuitCommand(CommandType command_type, std::deque<std::string> command_parameters);
 	~QuitCommand();
 
 	void Execute(MyVirtualDisk* virtual_disk);

@@ -12,14 +12,14 @@ public:
 	void SetName(std::string name);
 	std::string GetPath() const;
 	void SetPath(std::string path);
-	FileType GetType() const;
+	std::string GetType();
 	void SetType(FileType file_type);
 	std::size_t GetSize() const;
 	void SetSize(std::size_t size);
 	std::string GetLastModifiedTime() const;
 	void SetLastModifiedTime(std::string last_modified_time);
 
-	MyFileBase & GetParentDir() const;
+	virtual MyFileBase *GetParentDir();
 	void SetParentDir(MyFileBase *parent_dir);
 
 private:
@@ -30,5 +30,5 @@ private:
 
 	std::string m_last_modified_time = Utils::GetNowTimeToString();
 
-	std::unique_ptr<MyFileBase> m_parent_dir = nullptr;
+	MyFileBase *m_parent_dir = nullptr;
 };
