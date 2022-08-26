@@ -19,29 +19,86 @@ MdCommand::~MdCommand()
 
 void MdCommand::Execute(MyVirtualDisk * virtual_disk)
 {
-	if (this->GetCommandParameters().size() == 1)
-	{
-		MyDir *current_dir = virtual_disk->GetCurrentDir();
-		auto children_dir = current_dir->GetDirChildren();
-		auto file_name = this->GetCommandParameters()[0];
+	auto command_parameters = this->GetCommandParameters();
+	MyDir *current_dir = virtual_disk->GetCurrentDir();
+	auto children_dir = current_dir->GetDirChildren();
 
-		for (auto child : children_dir)
+	if (command_parameters.size() == 1)
+	{
+		auto path_list = Utils::GetSplitPath(command_parameters[0]);
+
+		for (size_t i = 0; i < path_list.size(); ++i)
 		{
-			if (file_name == child.first && child.second->GetType() == FileType::DIR)
+			if (i == 0 and path_list[i] == "C:")
 			{
-				std::cout << "目录重名了" << std::endl;
-				return;
+				if (i == path_list.size() - 1)
+				{
+					std::cout << "err" << std::endl;
+					return;
+				}
+				//TODO 根目录情况
+				current_dir = virtual_disk->GetRootDir();
+				children_dir = current_dir->GetDirChildren();
+			}
+			else if (path_list[i] == ".")
+			{
+				if (i == path_list.size() - 1)
+				{
+					std::cout << "err" << std::endl;
+					return;
+				}
+				continue;
+			}
+			else if (path_list[i] == "..")
+			{
+				if (i == path_list.size() - 1)
+				{
+					std::cout << "err" << std::endl;
+					return;
+				}
+				current_dir = current_dir->GetParentDir();
+				children_dir = current_dir->GetDirChildren();
+			}
+			else
+			{
+				// 查找，如果没有重复文件以及目录，创建新目录
+				auto all_children = current_dir->GetChildren();
+				if (all_children.find(boost::to_upper_copy(path_list[i])) == all_children.end())
+				{
+					MyDir *new_dir;
+
+					// 如果在根目录创建的文件夹
+					if (current_dir == virtual_disk->GetRootDir())
+					{
+						new_dir = new MyDir(path_list[i], current_dir->GetPath() + path_list[i], FileType::DIR, current_dir);
+					}
+					else
+					{
+						// 需要在父目录下创建的文件夹
+						new_dir = new MyDir(path_list[i], current_dir->GetPath() + "\\" + path_list[i], FileType::DIR, current_dir);
+					}
+
+					// 创建文件夹
+					current_dir->CreateFileOrDir(path_list[i], new_dir);
+					current_dir = new_dir;
+					children_dir = current_dir->GetDirChildren();
+				}
+				else
+				{
+					// 存在重名目录或者文件
+
+					std::cout << "子目录或文件 " << path_list[i] << " 已经存在。" << std::endl;
+				}
 			}
 		}
-
-		MyDir *new_dir = new MyDir(file_name, current_dir->GetPath(), FileType::DIR, current_dir);
-		
-		current_dir->CreateFileOrDir(file_name, new_dir);
-
 	}
-	else if (this->GetCommandParameters().size() > 1)
+	else if (command_parameters.size() > 1)
 	{
-
+		for (auto _path : command_parameters)
+		{
+			auto path_list = Utils::GetSplitPath(_path);
+			//TODO
+		}
 	}
 	std::cout << std::endl;
 }
@@ -58,7 +115,9 @@ bool MdCommand::IsCommandCorrect()
 	}
 	else if (command_parameters[0][0] == '/' && command_parameters[0][1] == '?')
 	{
+		//可以写成help类
 		std::cout << "help" << std::endl;
+
 		return false;
 	}
 

@@ -30,10 +30,12 @@ std::deque<std::string> Utils::GetCommandParameters(std::string command)
 	return command_parameters;
 }
 
-//std::vector<std::string> Utils::GetSplitPath(std::deque<std::string> command_parameters)
-//{
-//	std::vector<std::string> result;
-//	boost::split(result, command_parameters, boost::is_any_of("/"));
-//	return result;
-//}
+std::vector<std::string> Utils::GetSplitPath(std::string _path)
+{
+	// 去除路径右边无用的斜杠
+	boost::trim_right_if(_path, boost::is_any_of("/\\"));
 
+	std::vector<std::string> path_list;
+	boost::split(path_list, _path, boost::is_any_of("/\\"), boost::token_compress_on);
+	return path_list;
+}

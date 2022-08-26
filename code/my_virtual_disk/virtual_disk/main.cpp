@@ -6,7 +6,7 @@
 #include "command_factory.h"
 #include "command_invoker.h"
 
-void test()
+void run()
 {
 	// 创建虚拟磁盘对象
 	MyVirtualDisk *virtual_disk = MyVirtualDisk::GetInstance();
@@ -23,7 +23,7 @@ void test()
 	// 
 	while (!virtual_disk->GetQuitFlag())
 	{
-		std::cout << virtual_disk->GetCurrentDir()->GetPath() << "\\>";
+		std::cout << virtual_disk->GetCurrentDir()->GetPath() << ">";
 		std::getline(std::cin, input_command);
 
 		command = command_factory->BuildCommand(input_command, virtual_disk->GetCurrentDir());
@@ -47,9 +47,17 @@ void test()
 	command_invoker = nullptr;
 }
 
+void test()
+{
+	std::string s = "abcABC:.,/../.,/.,.//\\(*&%&^$*";
+	auto upper = boost::to_upper_copy(s);
+	std::cout << upper << std::endl;
+}
+
 int main()
 {
-	test();
+	run();
+	//test();
 	return 0;
 }
 

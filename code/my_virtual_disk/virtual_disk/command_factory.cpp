@@ -5,6 +5,7 @@
 #include "no_command.h"
 #include "dir_command.h"
 #include "md_command.h"
+#include "cd_command.h"
 #include "quit_command.h"
 #include "cls_command.h"
 #include "unknown_command.h"
@@ -52,6 +53,10 @@ CommandType GenerateCommand(std::string command)
 	{
 		command_type = CommandType::MD;
 	}
+	else if (boost::equals("cd", command_lower))
+	{
+		command_type = CommandType::CD;
+	}
 	else if(boost::equals("quit", command_lower) || boost::equals("exit", command_lower))
 	{
 		command_type = CommandType::QUIT;
@@ -73,13 +78,13 @@ Command * CommandFactory::BuildCommand(std::string command, MyDir * dir)
 	switch (command_type)
 	{
 	case CommandType::DIR:
-		return new DirCommand(CommandType::DIR, command_parameters);
+		return new DirCommand(command_type, command_parameters);
 	case CommandType::MD:
-		return new MdCommand(CommandType::MD, command_parameters);
+		return new MdCommand(command_type, command_parameters);
 	case CommandType::RD:
 		break;
 	case CommandType::CD:
-		break;
+		return new CdCommand(command_type, command_parameters);
 	case CommandType::DEL:
 		break;
 	case CommandType::REN:

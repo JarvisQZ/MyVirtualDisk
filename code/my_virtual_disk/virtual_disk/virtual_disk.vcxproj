@@ -154,6 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="cd_command.h" />
     <ClInclude Include="cls_command.h" />
     <ClInclude Include="command.h" />
     <ClInclude Include="command_invoker.h" />
@@ -174,6 +175,7 @@
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cd_command.cpp" />
     <ClCompile Include="cls_command.cpp" />
     <ClCompile Include="command.cpp" />
     <ClCompile Include="command_invoker.cpp" />

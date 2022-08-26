@@ -9,11 +9,13 @@ public:
 	virtual ~MyDir();
 
 	std::map<std::string, MyFileBase *> GetChildren();
-	std::map<std::string, MyFileBase *> GetDirChildren();
+	std::map<std::string, MyDir*> GetDirChildren();
 
 	virtual MyDir * GetParentDir() override;
 
-	void PrintFileAndDir();
+	void PrintFileAndDir(bool flag);
+
+	void PrintFileAndDirRecursion(MyDir* current_dir);
 
 	void CreateFileOrDir(std::string name, MyFileBase* new_file);
 

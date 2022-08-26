@@ -3,6 +3,7 @@
 #include "file_type.h"
 
 MyVirtualDisk* MyVirtualDisk::m_virtual_disk = nullptr;
+MyDir* MyVirtualDisk::m_root_dir = new MyDir("", "C:\\", FileType::DIR, nullptr);
 std::mutex MyVirtualDisk::mt;
 
 MyVirtualDisk* MyVirtualDisk::GetInstance()
@@ -24,6 +25,16 @@ MyDir * MyVirtualDisk::GetCurrentDir()
 	return this->m_current_dir;
 }
 
+void MyVirtualDisk::SetCurrentDir(MyDir & current_dir)
+{
+	this->m_current_dir = &current_dir;
+}
+
+MyDir * MyVirtualDisk::GetRootDir()
+{
+	return this->m_root_dir;
+}
+
 bool MyVirtualDisk::GetQuitFlag()
 {
 	return this->m_quit_flag;
@@ -35,8 +46,8 @@ void MyVirtualDisk::SetQuitFlag(bool flag)
 }
 
 MyVirtualDisk::MyVirtualDisk()
-	:m_root_dir(new MyDir("","C:",FileType::DIR,nullptr)),
-	m_current_dir(new MyDir("", "C:", FileType::DIR, nullptr)),
+	:
+	m_current_dir(MyVirtualDisk::m_root_dir),
 	m_quit_flag(false)
 {
 }

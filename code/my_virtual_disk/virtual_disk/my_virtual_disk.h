@@ -7,13 +7,15 @@ public:
 	static std::mutex mt;
 
 	MyDir* GetCurrentDir();
+	void SetCurrentDir(MyDir &current_dir);
+	MyDir* GetRootDir();
 
 	bool GetQuitFlag();
 	void SetQuitFlag(bool flag);
 
 private:
 	MyDir *m_current_dir = nullptr;
-	MyDir *m_root_dir = nullptr;
+	static MyDir *m_root_dir;
 	MyVirtualDisk();
 	~MyVirtualDisk();
 	static MyVirtualDisk *m_virtual_disk;

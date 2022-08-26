@@ -69,6 +69,9 @@
     <ClInclude Include="md_command.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="cd_command.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -120,6 +123,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="md_command.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cd_command.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
