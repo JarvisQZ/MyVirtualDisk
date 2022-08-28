@@ -19,3 +19,4 @@ bld/
 # Visual Studio 2015/2017 cache/options directory
 .vs/
 *.vcxproj
+code/my_virtual_disk/virtual_disk/virtual_disk.vcxproj
