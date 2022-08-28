@@ -16,14 +16,15 @@ CommandInvoker::~CommandInvoker()
 {
 	if (m_command != nullptr)
 	{
-		delete m_command;
+		//delete m_command;
+		// 确保m_command被清理
 		m_command = nullptr;
 	}
 }
 
-void CommandInvoker::SetCommand(Command * command)
+void CommandInvoker::SetCommand(Command & command)
 {
-	this->m_command = command;
+	this->m_command = &command;
 }
 
 void CommandInvoker::RunCommand(MyVirtualDisk * virtual_disk)

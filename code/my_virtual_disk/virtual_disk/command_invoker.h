@@ -8,7 +8,7 @@ public:
 	CommandInvoker(Command* command);
 	~CommandInvoker();
 
-	void SetCommand(Command *command);
+	void SetCommand(Command &command);
 
 	void RunCommand(MyVirtualDisk* virtual_disk);
 

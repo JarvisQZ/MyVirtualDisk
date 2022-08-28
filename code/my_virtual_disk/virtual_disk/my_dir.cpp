@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "my_dir.h"
+#include "file_type.h"
 
 
 MyDir::MyDir()
@@ -23,6 +24,19 @@ MyDir::MyDir(std::string name, std::string path, FileType file_type, MyDir *pare
 
 MyDir::~MyDir()
 {
+	// TODO map内部的指针未释放内存
+	//for (auto &child : m_children)
+	//{
+	//	if (child.second->GetType == FileType::DIR)
+	//	{
+	//		auto c = static_cast<MyDir*>(child.second);
+	//		if (c->GetChildren())
+	//		{
+
+	//		}
+	//	}
+	//}
+
 	std::map<std::string, MyFileBase *>().swap(this->m_children);
 }
 
@@ -149,7 +163,7 @@ void MyDir::UpdateDirSizeUpward()
 		}
 		dir_ptr->SetSize(size);
 		old_dir = dir_ptr;
-		dir_ptr = dynamic_cast<MyDir*>(dir_ptr->MyFileBase::GetParentDir());
+		dir_ptr = static_cast<MyDir*>(dir_ptr->MyFileBase::GetParentDir());
 	}
 }
 

@@ -12,10 +12,12 @@ void run()
 	MyVirtualDisk *virtual_disk = MyVirtualDisk::GetInstance();
 
 	// 创建工厂
-	CommandFactory *command_factory = new CommandFactory();
+	//CommandFactory *command_factory = new CommandFactory();
+	CommandFactory command_factory = CommandFactory();
 
 	// 创建命令调用
-	CommandInvoker *command_invoker = new CommandInvoker();
+	//CommandInvoker *command_invoker = new CommandInvoker();
+	CommandInvoker command_invoker = CommandInvoker();
 
 	std::string input_command = "";
 	Command* command = nullptr;
@@ -26,12 +28,12 @@ void run()
 		std::cout << virtual_disk->GetCurrentDir()->GetPath() << ">";
 		std::getline(std::cin, input_command);
 
-		command = command_factory->BuildCommand(input_command, virtual_disk->GetCurrentDir());
+		command = command_factory.BuildCommand(input_command, virtual_disk->GetCurrentDir());
 
 		if (command)
 		{
-			command_invoker->SetCommand(command);
-			command_invoker->RunCommand(virtual_disk);
+			command_invoker.SetCommand(*command);
+			command_invoker.RunCommand(virtual_disk);
 		}
 
 		delete command;
@@ -40,11 +42,11 @@ void run()
 
 
 	// 清理
-	delete command_factory;
-	command_factory = nullptr;
+	//delete command_factory;
+	//command_factory = nullptr;
 
 	//delete command_invoker;
-	command_invoker = nullptr;
+	//command_invoker = nullptr;
 }
 
 void test()
