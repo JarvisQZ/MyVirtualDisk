@@ -129,8 +129,9 @@ void RenCommand::Execute(MyVirtualDisk * virtual_disk)
 			for (auto &child : src_children)
 			{
 				// TODO 
-				// 未实现 应递归
-				// 或者将filepath 改成栈来实现
+				// 未实现 应递归, 弃用
+				// 或者将filepath 改成栈来实现， 弃用
+				// 实现新的方法生成绝对路径
 				child.second->SetPath(current_dir->GenerateDirectPath() + "\\" + dst_ + "\\" + child.second->GetName());
 			}
 			src_file->SetPath(current_dir->GenerateDirectPath() + "\\" + dst_);
