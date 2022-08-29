@@ -1,4 +1,6 @@
 #include "pch.h"
+#include "my_dir.h"
+#include "my_virtual_disk.h"
 #include "utils.h"
 
 std::string Utils::GetNowTimeToString()
@@ -39,3 +41,29 @@ std::vector<std::string> Utils::GetSplitPath(std::string _path)
 	boost::split(path_list, _path, boost::is_any_of("/\\"), boost::token_compress_on);
 	return path_list;
 }
+
+//std::string Utils::GenerateDirectPath(MyVirtualDisk *virtual_disk)
+//{
+//	//std::stack<MyFileBase*> s;
+//	//std::string result;
+//	//auto file_name = file.GetName();
+//
+//	//while (file.GetParentDir() != virtual_disk->GetRootDir())
+//	//{
+//	//	s.push(file);
+//	//	file = file.GetParentDir();
+//	//}
+//
+//	//s.push(virtual_disk->GetRootDir());
+//
+//	//if (s.size() == 1)
+//	//{
+//	//	result = s.top()->GetName() + "\\";
+//	//}
+//	//else
+//	//{
+//	//	result = boost::join(s, "\\");
+//	//}
+//
+//	return std::string();
+//}

@@ -20,6 +20,7 @@ void UnknownCommand::Execute(MyVirtualDisk * virtual_disk)
 {
 	std::cout << "'" << this->m_raw_command << "'" << " 不是内部或外部命令，也不是可运行的程序" << std::endl;
 	std::cout << "或批处理文件。" << std::endl;
+	std::cout << std::endl;
 }
 
 bool UnknownCommand::IsCommandCorrect()

@@ -160,9 +160,14 @@
     <ClInclude Include="command_invoker.h" />
     <ClInclude Include="command_factory.h" />
     <ClInclude Include="command_type.h" />
+    <ClInclude Include="copy_command.h" />
+    <ClInclude Include="del_command.h" />
     <ClInclude Include="dir_command.h" />
     <ClInclude Include="file_type.h" />
+    <ClInclude Include="LoadCommand.h" />
     <ClInclude Include="md_command.h" />
+    <ClInclude Include="mklink_command.h" />
+    <ClInclude Include="move_command.h" />
     <ClInclude Include="my_link_file.h" />
     <ClInclude Include="my_virtual_disk.h" />
     <ClInclude Include="my_dir.h" />
@@ -171,6 +176,9 @@
     <ClInclude Include="no_command.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="quit_command.h" />
+    <ClInclude Include="rd_command.h" />
+    <ClInclude Include="ren_command.h" />
+    <ClInclude Include="save_command.h" />
     <ClInclude Include="unknown_command.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
@@ -180,8 +188,13 @@
     <ClCompile Include="command.cpp" />
     <ClCompile Include="command_invoker.cpp" />
     <ClCompile Include="command_factory.cpp" />
+    <ClCompile Include="copy_command.cpp" />
+    <ClCompile Include="del_command.cpp" />
     <ClCompile Include="dir_command.cpp" />
+    <ClCompile Include="LoadCommand.cpp" />
     <ClCompile Include="md_command.cpp" />
+    <ClCompile Include="mklink_command.cpp" />
+    <ClCompile Include="move_command.cpp" />
     <ClCompile Include="my_link_file.cpp" />
     <ClCompile Include="my_dir.cpp" />
     <ClCompile Include="my_virtual_disk.cpp" />
@@ -196,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="quit_command.cpp" />
+    <ClCompile Include="rd_command.cpp" />
+    <ClCompile Include="ren_command.cpp" />
+    <ClCompile Include="save_command.cpp" />
     <ClCompile Include="unknown_command.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>

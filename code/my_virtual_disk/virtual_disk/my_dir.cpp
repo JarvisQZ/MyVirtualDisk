@@ -149,6 +149,15 @@ void MyDir::CreateFileOrDir(std::string name, MyFileBase * new_file)
 	this->UpdateDirSizeUpward();
 }
 
+void MyDir::DeleteChild(std::string name)
+{
+	// 把子文件从map中移除，并没有清理对象
+	boost::to_upper(name);
+	this->m_children.erase(this->m_children.find(name));
+	this->SetLastModifiedTime(Utils::GetNowTimeToString());
+	this->UpdateDirSizeUpward();
+}
+
 void MyDir::UpdateDirSizeUpward()
 {
 	MyDir* dir_ptr = nullptr;

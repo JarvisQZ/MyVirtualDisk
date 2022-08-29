@@ -11,6 +11,7 @@ public:
 	std::string GetName() const;
 	void SetName(std::string name);
 	std::string GetPath() const;
+	std::string GenerateDirectPath();
 	void SetPath(std::string path);
 	std::string GetTypeToString() const;
 	FileType GetType() const;

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "my_file_base.h"
+#include "my_virtual_disk.h"
 #include "utils.h"
 
 MyFileBase::MyFileBase()
@@ -28,6 +29,36 @@ void MyFileBase::SetName(std::string name)
 std::string MyFileBase::GetPath() const
 {
 	return this->m_path;
+}
+
+std::string MyFileBase::GenerateDirectPath()
+{
+	auto virtual_disk = MyVirtualDisk::GetInstance();
+	auto root_dir = virtual_disk->GetRootDir();
+	auto current_dir = virtual_disk->GetCurrentDir();
+
+	std::deque<std::string> d;
+	std::string result;
+
+
+	while (current_dir != root_dir)
+	{
+		d.push_front(current_dir->GetName());
+		current_dir = current_dir->GetParentDir();
+	}
+
+	// 根目录没有名字
+	d.push_front("C:");
+
+	if (d.size() == 1)
+	{
+		result = d.front() + "\\";
+	}
+	else
+	{
+		result = boost::join(d, "\\");
+	}
+	return result;
 }
 
 void MyFileBase::SetPath(std::string path)
