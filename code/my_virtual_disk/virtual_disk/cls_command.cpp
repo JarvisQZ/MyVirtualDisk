@@ -19,6 +19,7 @@ ClsCommand::~ClsCommand()
 void ClsCommand::Execute(MyVirtualDisk * virtual_disk)
 {
 	system("cls");
+	std::cout << std::endl;
 }
 
 bool ClsCommand::IsCommandCorrect()

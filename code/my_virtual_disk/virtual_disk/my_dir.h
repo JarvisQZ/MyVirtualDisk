@@ -19,6 +19,8 @@ public:
 
 	void CreateFileOrDir(std::string name, MyFileBase* new_file);
 
+	void DeleteChild(std::string name);
+
 	void UpdateDirSizeUpward();
 
 private:

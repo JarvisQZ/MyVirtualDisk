@@ -22,10 +22,18 @@ void run()
 	std::string input_command = "";
 	Command* command = nullptr;
 
+	std::cout << "My VirtualDisk [版本 x.x.x.x]" << std::endl;
+	std::cout << "(c)waibiwaibi。保留所有权利。" << std::endl;
+	std::cout << std::endl;
+
 	// 
 	while (!virtual_disk->GetQuitFlag())
 	{
-		std::cout << virtual_disk->GetCurrentDir()->GetPath() << ">";
+		
+		std::cout << virtual_disk->GetCurrentDir()->GenerateDirectPath() << ">";
+
+
+		//std::cout << virtual_disk->GetCurrentDir()->GetPath() << ">";
 		std::getline(std::cin, input_command);
 
 		command = command_factory.BuildCommand(input_command, virtual_disk->GetCurrentDir());
@@ -51,9 +59,23 @@ void run()
 
 void test()
 {
-	std::string s = "abcABC:.,/../.,/.,.//\\(*&%&^$*";
-	auto upper = boost::to_upper_copy(s);
-	std::cout << upper << std::endl;
+	std::vector<std::string> s;
+	std::string result;
+
+
+	s.push_back("A:");
+
+	if (s.size() == 1)
+	{
+		result = s.back() + "\\";
+	}
+	else
+	{
+		result = boost::join(s, "\\");
+	}
+
+	std::cout << result << std::endl;
+
 }
 
 int main()
