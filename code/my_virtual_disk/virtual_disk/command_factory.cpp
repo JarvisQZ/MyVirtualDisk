@@ -5,7 +5,15 @@
 #include "no_command.h"
 #include "dir_command.h"
 #include "md_command.h"
+#include "rd_command.h"
 #include "cd_command.h"
+#include "del_command.h"
+#include "copy_command.h"
+#include "ren_command.h"
+#include "move_command.h"
+#include "mklink_command.h"
+#include "save_command.h"
+#include "LoadCommand.h"
 #include "quit_command.h"
 #include "cls_command.h"
 #include "unknown_command.h"
@@ -61,6 +69,38 @@ CommandType GenerateCommand(std::string command)
 	{
 		command_type = CommandType::QUIT;
 	}
+	else if (boost::equals("rd", command_lower))
+	{
+		command_type = CommandType::RD;
+	}
+	else if (boost::equals("del", command_lower))
+	{
+		command_type = CommandType::DEL;
+	}
+	else if (boost::equals("copy", command_lower))
+	{
+		command_type = CommandType::COPY;
+	}
+	else if (boost::equals("ren", command_lower))
+	{
+		command_type = CommandType::REN;
+	}
+	else if (boost::equals("move", command_lower))
+	{
+		command_type = CommandType::MOVE;
+	}
+	else if (boost::equals("mklink", command_lower))
+	{
+		command_type = CommandType::MKLINK;
+	}
+	else if (boost::equals("save", command_lower))
+	{
+		command_type = CommandType::SAVE;
+	}
+	else if (boost::equals("load", command_lower))
+	{
+		command_type = CommandType::LOAD;
+	}
 	else
 	{
 		command_type = CommandType::UNKCommand;
@@ -82,30 +122,30 @@ Command * CommandFactory::BuildCommand(std::string command, MyDir * dir)
 	case CommandType::MD:
 		return new MdCommand(command_type, command_parameters);
 	case CommandType::RD:
-		break;
+		return new RdCommand(command_type, command_parameters);
 	case CommandType::CD:
 		return new CdCommand(command_type, command_parameters);
 	case CommandType::DEL:
-		break;
+		return new DelCommand(command_type, command_parameters);
 	case CommandType::REN:
-		break;
+		return new RenCommand(command_type, command_parameters);
 	case CommandType::COPY:
-		break;
+		return new CopyCommand(command_type, command_parameters);
 	case CommandType::MOVE:
-		break;
+		return new MoveCommand(command_type, command_parameters);
 	case CommandType::CLS:
-		return new ClsCommand(CommandType::CLS, command_parameters);
+		return new ClsCommand(command_type, command_parameters);
 	case CommandType::SAVE:
-		break;
+		return new SaveCommand(command_type, command_parameters);
 	case CommandType::LOAD:
-		break;
+		return new LoadCommand(command_type, command_parameters);
 	case CommandType::MKLINK:
-		break;
+		return new MklinkCommand(command_type, command_parameters);
 	case CommandType::NOCommand:
-		return new NoCommand(CommandType::NOCommand, command_parameters);
+		return new NoCommand(command_type, command_parameters);
 	case CommandType::QUIT:
-		return new QuitCommand(CommandType::QUIT, command_parameters);
+		return new QuitCommand(command_type, command_parameters);
 	default:
-		return new UnknownCommand(CommandType::UNKCommand, raw_command);
+		return new UnknownCommand(command_type, raw_command);
 	}
 }

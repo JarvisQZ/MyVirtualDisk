@@ -72,6 +72,30 @@
     <ClInclude Include="cd_command.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="rd_command.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="del_command.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="copy_command.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ren_command.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="move_command.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mklink_command.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="save_command.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadCommand.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -126,6 +150,30 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="cd_command.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="rd_command.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="del_command.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ren_command.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="copy_command.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="move_command.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mklink_command.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="save_command.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadCommand.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
