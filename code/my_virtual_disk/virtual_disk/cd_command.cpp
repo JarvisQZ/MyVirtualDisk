@@ -24,7 +24,7 @@ void CdCommand::Execute(MyVirtualDisk * virtual_disk)
 
 	if (command_parameters.size() == 0)
 	{
-		std::cout << virtual_disk->GetCurrentDir()->GetPath() << std::endl;
+		std::cout << virtual_disk->GetCurrentDir()->GenerateDirectPath() << std::endl;
 		std::cout << std::endl;
 		return;
 	}

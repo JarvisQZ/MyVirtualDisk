@@ -75,7 +75,7 @@ void DelCommand::Execute(MyVirtualDisk * virtual_disk)
 					auto child_iter = all_children.find(boost::to_upper_copy(path_list[i]));
 					if (child_iter == all_children.end())
 					{
-						std::cout << "找不到 " << current_dir->GetPath() << "\\" << path_list[i] << std::endl;
+						std::cout << "找不到 " << current_dir->GenerateDirectPath() << "\\" << path_list[i] << std::endl;
 						std::cout << std::endl;
 						return;
 					}
@@ -102,7 +102,7 @@ void DelCommand::Execute(MyVirtualDisk * virtual_disk)
 			auto child_iter = all_children.find(boost::to_upper_copy(path_list.back()));
 			if (child_iter == all_children.end())
 			{
-				std::cout << "找不到 " << current_dir->GetPath() << "\\" << path_list.back() << std::endl;
+				std::cout << "找不到 " << current_dir->GenerateDirectPath() << "\\" << path_list.back() << std::endl;
 				std::cout << std::endl;
 				return;
 			}
@@ -124,7 +124,7 @@ void DelCommand::Execute(MyVirtualDisk * virtual_disk)
 					std::string flag = "";
 					do
 					{
-						std::cout << child_iter->second->GetPath() << "\\*, " << "是否确认(Y/N)? ";
+						std::cout << child_iter->second->GenerateDirectPath() << "\\*, " << "是否确认(Y/N)? ";
 						std::getline(std::cin, flag);
 						boost::to_upper(flag);
 					} while (flag[0] != 'N' && flag[0] != 'Y');

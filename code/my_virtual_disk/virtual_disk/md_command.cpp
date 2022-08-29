@@ -70,12 +70,12 @@ void MdCommand::Execute(MyVirtualDisk * virtual_disk)
 					// 如果在根目录创建的文件夹
 					if (current_dir == virtual_disk->GetRootDir())
 					{
-						new_dir = new MyDir(path_list[i], current_dir->GetPath() + path_list[i], FileType::DIR, current_dir);
+						new_dir = new MyDir(path_list[i], current_dir->GenerateDirectPath() + path_list[i], FileType::DIR, current_dir);
 					}
 					else
 					{
 						// 需要在父目录下创建的文件夹
-						new_dir = new MyDir(path_list[i], current_dir->GetPath() + "\\" + path_list[i], FileType::DIR, current_dir);
+						new_dir = new MyDir(path_list[i], current_dir->GenerateDirectPath() + "\\" + path_list[i], FileType::DIR, current_dir);
 					}
 
 					// 创建文件夹

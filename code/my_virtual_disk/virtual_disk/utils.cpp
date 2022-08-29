@@ -28,7 +28,7 @@ std::deque<std::string> Utils::GetCommandParameters(std::string command)
 {
 	boost::trim(command);
 	std::deque<std::string> command_parameters;
-	boost::split(command_parameters, command, boost::is_space());
+	boost::split(command_parameters, command, boost::is_space(), boost::token_compress_on);
 	return command_parameters;
 }
 

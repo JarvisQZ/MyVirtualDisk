@@ -74,7 +74,7 @@ void MyDir::PrintFileAndDir(bool flag)
 	std::size_t all_file_size = 0;
 
 	std::cout << std::endl;
-	std::cout << " " << this->GetPath() << " 的目录" << std::endl;
+	std::cout << " " << this->GenerateDirectPath() << " 的目录" << std::endl;
 	std::cout << std::endl;
 
 	if (this->GetParentDir() != this)
