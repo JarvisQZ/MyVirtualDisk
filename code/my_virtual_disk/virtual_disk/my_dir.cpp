@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "utils.h"
 #include "my_dir.h"
+#include "my_file.h"
 #include "my_file_base.h"
 #include "file_type.h"
 
@@ -42,18 +43,18 @@ MyDir::~MyDir()
 	std::map<std::string, MyFileBase *>().swap(this->m_children);
 }
 
-std::map<std::string, MyFileBase*> MyDir::GetChildren()
+std::map<std::string, MyFileBase*> MyDir::GetChildren() const
 {
 	return this->m_children;
 }
 
-std::map<std::string, MyDir*> MyDir::GetDirChildren()
+std::map<std::string, MyDir*> MyDir::GetDirChildren() const
 {
 	std::map<std::string, MyDir*> dir_children;
 
 	for (auto children : this->GetChildren())
 	{
-		if (children.second->GetTypeToString() == "<DIR>")
+		if (children.second->GetType() == FileType::DIR)
 		{
 			dir_children.insert_or_assign(children.first, static_cast<MyDir*>(children.second));
 		}
@@ -62,7 +63,22 @@ std::map<std::string, MyDir*> MyDir::GetDirChildren()
 	return dir_children;
 }
 
-std::vector<std::string> MyDir::GetFileChildren() const
+std::map<std::string, MyFile*> MyDir::GetFileChildren() const
+{
+	std::map<std::string, MyFile*> file_children;
+
+	for (auto children : this->GetChildren())
+	{
+		if (children.second->GetType() == FileType::OTHER)
+		{
+			file_children.insert_or_assign(children.first, static_cast<MyFile*>(children.second));
+		}
+	}
+
+	return file_children;
+}
+
+std::vector<std::string> MyDir::GetFileChildrenNameList() const
 {
 	std::vector<std::string> result;
 	

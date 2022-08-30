@@ -1,5 +1,6 @@
 #pragma once
 #include "my_file_base.h"
+class MyFile;
 
 class MyDir
 	: public MyFileBase
@@ -9,10 +10,12 @@ public:
 	MyDir(std::string name, std::string path, FileType file_type, MyDir *parent_dir);
 	virtual ~MyDir();
 
-	std::map<std::string, MyFileBase *> GetChildren();
-	std::map<std::string, MyDir*> GetDirChildren();
+	std::map<std::string, MyFileBase *> GetChildren() const;
+	std::map<std::string, MyDir*> GetDirChildren() const;
+	std::map<std::string, MyFile*> GetFileChildren() const;
 
-	std::vector<std::string> GetFileChildren() const;
+
+	std::vector<std::string> GetFileChildrenNameList() const;
 
 	//virtual MyDir * GetParentDir() override;
 

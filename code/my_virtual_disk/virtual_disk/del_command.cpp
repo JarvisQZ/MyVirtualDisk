@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "utils.h"
+#include "my_file.h"
 #include "file_type.h"
 #include "del_command.h"
 
@@ -18,6 +19,26 @@ DelCommand::~DelCommand()
 {
 }
 
+// 删除一个文件
+void DelCommand::MyDelete(MyFile * del_file)
+{
+	auto virtual_disk = MyVirtualDisk::GetInstance();
+	auto current_dir = virtual_disk->GetCurrentDir();
+	current_dir->DeleteChild(del_file->GetName());
+	delete del_file;
+	del_file = nullptr;
+}
+
+// 删除目录下的所有文件
+void DelCommand::MyDelete(MyDir * del_dir)
+{
+	auto file_children = del_dir->GetFileChildren();
+	for (auto child : file_children)
+	{
+		this->MyDelete(child.second);
+	}
+}
+
 void DelCommand::Execute(MyVirtualDisk * virtual_disk)
 {
 	//std::cout << "DEL Command!" << std::endl;
@@ -30,75 +51,57 @@ void DelCommand::Execute(MyVirtualDisk * virtual_disk)
 	{
 		auto path_list = Utils::GetSplitPath(command_parameters[0]);
 
-		// 删除根目录下的某文件
-		if (command_parameters[0][0] == '/')
-		{
+		// 不确定是不是文件，按照文件处理
+		current_dir = Utils::GetPathDir(path_list, true);
 
-		}
-		else // 删除相对路径下的某文件
+		if (path_list.back() == ".")
 		{
-			// 遍历到倒数第二个
-			for (size_t i = 0; i < path_list.size() - 1; ++i)
+			// 删除当前目录下的文件
+
+			std::string flag = "";
+			do
 			{
-				if (i == 0 and path_list[i] == "C:")
-				{
-					if (i == path_list.size() - 1)
-					{
-						std::cout << "err" << std::endl;
-						return;
-					}
-					//TODO 根目录情况
-					current_dir = virtual_disk->GetRootDir();
-					children_dir = current_dir->GetDirChildren();
-				}
-				else if (path_list[i] == ".")
-				{
-					//if (i == path_list.size() - 1)
-					//{
-					//	std::cout << "err" << std::endl;
-					//	return;
-					//}
-					continue;
-				}
-				else if (path_list[i] == "..")
-				{
-					//if (i == path_list.size() - 1)
-					//{
-					//	std::cout << "err" << std::endl;
-					//	return;
-					//}
-					current_dir = current_dir->GetParentDir();
-					children_dir = current_dir->GetDirChildren();
-				}
-				else
-				{
-					// 查找，如果没有对应目录，返回错误信息
-					auto all_children = current_dir->GetChildren();
-					auto child_iter = all_children.find(boost::to_upper_copy(path_list[i]));
-					if (child_iter == all_children.end())
-					{
-						std::cout << "找不到 " << current_dir->GenerateDirectPath() << "\\" << path_list[i] << std::endl;
-						std::cout << std::endl;
-						return;
-					}
-					else
-					{
-						// 中间文件名中有文件
-						if (child_iter->second->GetType() == FileType::OTHER)
-						{
-							// TODO
-							std::cout << "目录名称无效" << std::endl;
-							std::cout << std::endl;
-							return;
-						}
-						else // 找到目录
-						{
-							current_dir = static_cast<MyDir*>(child_iter->second);
-							children_dir = current_dir->GetDirChildren();
-						}
-					}
-				}
+				std::cout << current_dir->GenerateDirectPath() << "\\*, " << "是否确认(Y/N)? ";
+				std::getline(std::cin, flag);
+				boost::to_upper(flag);
+			} while (flag[0] != 'N' && flag[0] != 'Y');
+			if (flag[0] == 'N')
+			{
+				// 取消操作
+				std::cout << std::endl;
+				return;
 			}
+			else {
+				this->MyDelete(current_dir);
+				std::cout << std::endl;
+			}
+		}
+		else if (path_list.back() == "..")
+		{
+			// 删除上一级目录下的文件
+			current_dir = current_dir->GetParentDir();
+
+			std::string flag = "";
+			do
+			{
+				std::cout << current_dir->GetPath() << "\\*, " << "是否确认(Y/N)? ";
+				std::getline(std::cin, flag);
+				boost::to_upper(flag);
+			} while (flag[0] != 'N' && flag[0] != 'Y');
+			if (flag[0] == 'N')
+			{
+				// 取消操作
+				std::cout << std::endl;
+				return;
+			}
+			else
+			{
+				this->MyDelete(current_dir);
+				std::cout << std::endl;
+			}
+		}
+		else
+		{
 			// 最终结果是文件还是目录
 			auto all_children = current_dir->GetChildren();
 			auto child_iter = all_children.find(boost::to_upper_copy(path_list.back()));
@@ -113,14 +116,12 @@ void DelCommand::Execute(MyVirtualDisk * virtual_disk)
 				if (child_iter->second->GetType() == FileType::OTHER)
 				{
 					// 如果最终结果是文件
-					auto del_file = child_iter->second;
-					current_dir->DeleteChild(del_file->GetName());
-					delete del_file;
-					del_file = nullptr;
+					auto del_file = static_cast<MyFile*>(child_iter->second);
+					this->MyDelete(del_file);
 					std::cout << std::endl;
-					return;
+
 				}
-				else
+				else if (child_iter->second->GetType() == FileType::DIR)
 				{
 					// 是目录 删除该目录下所有文件
 					std::string flag = "";
@@ -141,19 +142,15 @@ void DelCommand::Execute(MyVirtualDisk * virtual_disk)
 						// TODO
 						// 删除目录下所有文件
 						auto del_dir = current_dir->GetDirChildren().find(boost::to_upper_copy(path_list.back()))->second;
-						for (auto &child : del_dir->GetChildren())
-						{
-							if (child.second->GetType() == FileType::OTHER)
-							{
-								del_dir->DeleteChild(child.second->GetName());
-								delete &child;
-							}
-						}
+						this->MyDelete(del_dir);
 						std::cout << std::endl;
-						return;
+
 					}
 				}
-
+				else if (child_iter->second->GetType() == FileType::MLINK)
+				{
+					// TODO
+				}
 			}
 		}
 	}

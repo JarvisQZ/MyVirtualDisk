@@ -2,6 +2,7 @@
 #include "my_dir.h"
 #include "my_virtual_disk.h"
 #include "utils.h"
+#include "file_type.h"
 
 std::string Utils::GetNowTimeToString()
 {
@@ -56,6 +57,87 @@ bool Utils::IsNameIllegal(std::string name)
 		return false;
 	}
 	return true;
+}
+
+MyDir * Utils::GetPathDir(std::vector<std::string> path_list, bool is_file)
+{
+
+	auto virtual_disk = MyVirtualDisk::GetInstance();
+	auto *current_dir = virtual_disk->GetCurrentDir();
+	auto children_dir = current_dir->GetDirChildren();
+	auto all_children = current_dir->GetChildren();
+
+	for (size_t i = 0; i < path_list.size(); ++i)
+	{
+		if (i == path_list.size() - 1)
+		{
+			if (is_file)
+			{
+				break;
+			}
+		}
+		// 绝对路径
+		if (i == 0 and (path_list[i] == "C:" or path_list[0][0] == '/'))
+		{
+			//TODO 根目录情况
+			current_dir = virtual_disk->GetRootDir();
+			children_dir = current_dir->GetDirChildren();
+		}
+		else if (path_list[i] == "..")
+		{
+			current_dir = current_dir->GetParentDir();
+			children_dir = current_dir->GetDirChildren();
+		}
+		else if (path_list[i] == ".")
+		{
+			continue;
+		}
+		else
+		{
+			all_children = current_dir->GetChildren();
+			if (all_children.find(path_list[i]) == all_children.end())
+			{
+				std::cout << "系统找不到指定的文件。" << std::endl;
+				std::cout << std::endl;
+				return nullptr;
+			}
+			else
+			{
+				// 如果找到文件，输出错误信息
+				if (all_children[path_list[i]]->GetType() == FileType::OTHER)
+				{
+					std::cout << "系统找不到指定的文件。" << std::endl;
+					std::cout << std::endl;
+					return nullptr;
+				}
+				else
+				{
+					current_dir = children_dir[path_list[i]];
+					children_dir = current_dir->GetDirChildren();
+				}
+			}
+		}
+	}
+
+	//all_children = current_dir->GetChildren();
+	//if (all_children.find(path_list.back()) == all_children.end())
+	//{
+	//	std::cout << "系统找不到指定的文件。" << std::endl;
+	//	std::cout << std::endl;
+	//	return nullptr;
+	//}
+	//else
+	//{
+	//	// 如果最后是文件，返回当前目录
+	//	// 是目录，返回目录
+	//	if (all_children[path_list.back()]->GetType() != FileType::OTHER)
+	//	{
+	//		current_dir = children_dir[path_list.back()];
+	//		children_dir = current_dir->GetDirChildren();
+	//	}
+	//}
+
+	return current_dir;
 }
 
 //std::string Utils::GenerateDirectPath(MyVirtualDisk *virtual_disk)

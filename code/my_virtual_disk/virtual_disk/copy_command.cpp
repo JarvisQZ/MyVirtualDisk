@@ -85,82 +85,82 @@ bool CopyCommand::WildCardMatching(std::string path, std::string input_path)
 	return dp[m][n];
 }
 
-MyDir * CopyCommand::GetPathDir(MyVirtualDisk * virtualdisk, std::string path, bool type)
-{
-	return nullptr;
-}
+//MyDir * CopyCommand::GetPathDir(MyVirtualDisk * virtualdisk, std::string path, bool type)
+//{
+//	return nullptr;
+//}
 
-MyDir * CopyCommand::GetPathDir(MyVirtualDisk * virtual_disk, std::vector<std::string> path_list)
-{
-	MyDir *current_dir = virtual_disk->GetCurrentDir();
-	auto children_dir = current_dir->GetDirChildren();
-	auto all_children = current_dir->GetChildren();
-
-
-	for (size_t i = 0; i < path_list.size() - 1; ++i)
-	{
-		// 绝对路径
-		if (i == 0 and (path_list[i] == "C:" or path_list[0][0] == '/'))
-		{
-			//TODO 根目录情况
-			current_dir = virtual_disk->GetRootDir();
-			children_dir = current_dir->GetDirChildren();
-		}
-		else if (path_list[i] == "..")
-		{
-			current_dir = current_dir->GetParentDir();
-			children_dir = current_dir->GetDirChildren();
-		}
-		else if (path_list[i] == ".")
-		{
-			continue;
-		}
-		else
-		{
-			all_children = current_dir->GetChildren();
-			if (all_children.find(path_list[i]) == all_children.end())
-			{
-				std::cout << "系统找不到指定的文件。" << std::endl;
-				std::cout << std::endl;
-				return nullptr;
-			}
-			else
-			{
-				// 如果找到文件，输出错误信息
-				if (all_children[path_list[i]]->GetType() == FileType::OTHER)
-				{
-					std::cout << "系统找不到指定的文件。" << std::endl;
-					std::cout << std::endl;
-					return nullptr;
-				}
-				else
-				{
-					current_dir = children_dir[path_list[i]];
-					children_dir = current_dir->GetDirChildren();
-				}
-			}
-		}
-	}
-
-	all_children = current_dir->GetChildren();
-	if (all_children.find(path_list.back()) == all_children.end())
-	{
-		//std::cout << "系统找不到指定的文件。" << std::endl;
-		//std::cout << std::endl;
-		//return nullptr;
-	}
-	else
-	{
-		// 如果最后是文件，返回当前目录
-		// 是目录，返回目录
-		if (all_children[path_list.back()]->GetType() != FileType::OTHER)
-		{
-			current_dir = children_dir[path_list.back()];
-			children_dir = current_dir->GetDirChildren();
-		}
-	}
-	return current_dir;
-}
+//MyDir * CopyCommand::GetPathDir(MyVirtualDisk * virtual_disk, std::vector<std::string> path_list)
+//{
+//	MyDir *current_dir = virtual_disk->GetCurrentDir();
+//	auto children_dir = current_dir->GetDirChildren();
+//	auto all_children = current_dir->GetChildren();
+//
+//
+//	for (size_t i = 0; i < path_list.size() - 1; ++i)
+//	{
+//		// 绝对路径
+//		if (i == 0 and (path_list[i] == "C:" or path_list[0][0] == '/'))
+//		{
+//			//TODO 根目录情况
+//			current_dir = virtual_disk->GetRootDir();
+//			children_dir = current_dir->GetDirChildren();
+//		}
+//		else if (path_list[i] == "..")
+//		{
+//			current_dir = current_dir->GetParentDir();
+//			children_dir = current_dir->GetDirChildren();
+//		}
+//		else if (path_list[i] == ".")
+//		{
+//			continue;
+//		}
+//		else
+//		{
+//			all_children = current_dir->GetChildren();
+//			if (all_children.find(path_list[i]) == all_children.end())
+//			{
+//				std::cout << "系统找不到指定的文件。" << std::endl;
+//				std::cout << std::endl;
+//				return nullptr;
+//			}
+//			else
+//			{
+//				// 如果找到文件，输出错误信息
+//				if (all_children[path_list[i]]->GetType() == FileType::OTHER)
+//				{
+//					std::cout << "系统找不到指定的文件。" << std::endl;
+//					std::cout << std::endl;
+//					return nullptr;
+//				}
+//				else
+//				{
+//					current_dir = children_dir[path_list[i]];
+//					children_dir = current_dir->GetDirChildren();
+//				}
+//			}
+//		}
+//	}
+//
+//	all_children = current_dir->GetChildren();
+//	if (all_children.find(path_list.back()) == all_children.end())
+//	{
+//		//std::cout << "系统找不到指定的文件。" << std::endl;
+//		//std::cout << std::endl;
+//		//return nullptr;
+//	}
+//	else
+//	{
+//		// 如果最后是文件，返回当前目录
+//		// 是目录，返回目录
+//		if (all_children[path_list.back()]->GetType() != FileType::OTHER)
+//		{
+//			current_dir = children_dir[path_list.back()];
+//			children_dir = current_dir->GetDirChildren();
+//		}
+//	}
+//	return current_dir;
+//}
 
 int CopyCommand::FindFileBase(std::string path)
 {
@@ -188,7 +188,6 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 	auto src_ = command_parameters[0];
 	auto dst_ = command_parameters[1];
 	MyDir *current_dir = virtual_disk->GetCurrentDir();
-	auto children_dir = current_dir->GetDirChildren();
 
 	auto path_list = Utils::GetSplitPath(src_);
 
@@ -202,19 +201,19 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 		{
 			regex = path_list[0];
 			boost::to_upper(regex);
-			all_file_name = current_dir->GetFileChildren();
+			all_file_name = current_dir->GetFileChildrenNameList();
 		}
 		else
 		{
 			//遍历src_到指定文件夹
-			current_dir = this->GetPathDir(virtual_disk, path_list);
+			current_dir = Utils::GetPathDir(path_list, false);
 
 			if (current_dir == nullptr)
 			{
 				return;
 			}
 
-			all_file_name = current_dir->GetFileChildren();
+			all_file_name = current_dir->GetFileChildrenNameList();
 
 			regex = path_list.back();
 			boost::to_upper(regex);
@@ -239,7 +238,7 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 		if (this->m_target_files.size() == 1)
 		{
 			std::string new_file_name;
-			dst_dir = this->GetPathDir(virtual_disk, path_list);
+			dst_dir = Utils::GetPathDir(path_list, true);
 			if (dst_dir == nullptr)
 			{
 				return;
@@ -270,7 +269,8 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 		}
 		else
 		{
-			dst_dir = GetPathDir(virtual_disk, path_list);
+			// 多个文件拷贝，dst因该是目录
+			dst_dir = Utils::GetPathDir(path_list, false);
 			if (dst_dir == nullptr)
 			{
 				std::cout << std::endl;
@@ -306,7 +306,7 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 		if (this->m_target_files.size() == 1)
 		{
 			std::string new_file_name;
-			dst_dir = GetPathDir(virtual_disk, dst_path_list);
+			dst_dir = Utils::GetPathDir(dst_path_list, true);
 			new_file_name = dst_path_list.back();
 			if (dst_dir == nullptr)
 			{
@@ -344,7 +344,8 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 		}
 		else
 		{
-			dst_dir = GetPathDir(virtual_disk, dst_path_list);
+			// 多个文件拷贝，dst因该是目录
+			dst_dir = Utils::GetPathDir(dst_path_list, false);
 			if (dst_dir == nullptr)
 			{
 				std::cout << std::endl;
