@@ -1,6 +1,7 @@
 #pragma once
 enum class FileType
 {
+	OTHER,
 	DIR,
-	OTHER
+	MLINK,
 };

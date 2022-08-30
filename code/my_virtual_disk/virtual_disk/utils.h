@@ -7,5 +7,7 @@ public:
 	std::deque<std::string> static GetCommandParameters(std::string command);
 	std::vector<std::string> static GetSplitPath(std::string _path);
 	//std::string static GenerateDirectPath(MyVirtualDisk *virtual_disk);
+	bool static IsNameIllegal(std::string name);
+
 };
 

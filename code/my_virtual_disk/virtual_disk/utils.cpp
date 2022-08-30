@@ -42,6 +42,22 @@ std::vector<std::string> Utils::GetSplitPath(std::string _path)
 	return path_list;
 }
 
+bool Utils::IsNameIllegal(std::string name)
+{
+	if (name.find("/") == std::string::npos &&
+		name.find("\\") == std::string::npos &&
+		name.find("<") == std::string::npos &&
+		name.find(">") == std::string::npos &&
+		name.find("*") == std::string::npos &&
+		name.find("?") == std::string::npos &&
+		name.find("|") == std::string::npos &&
+		name.size() > 0)
+	{
+		return false;
+	}
+	return true;
+}
+
 //std::string Utils::GenerateDirectPath(MyVirtualDisk *virtual_disk)
 //{
 //	//std::stack<MyFileBase*> s;

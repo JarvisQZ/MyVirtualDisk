@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "file_type.h"
 #include "dir_command.h"
 
 

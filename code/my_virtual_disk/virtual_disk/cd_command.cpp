@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "cd_command.h"
-
+#include "utils.h"
+#include "file_type.h"
 
 CdCommand::CdCommand()
 {

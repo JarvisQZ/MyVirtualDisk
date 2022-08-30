@@ -1,19 +1,32 @@
 #include "pch.h"
-#include "my_file_base.h"
 #include "my_virtual_disk.h"
+#include "my_file_base.h"
 #include "utils.h"
+#include "file_type.h"
 
 MyFileBase::MyFileBase()
+	:m_last_modified_time(Utils::GetNowTimeToString())
 {
 }
 
 MyFileBase::MyFileBase(std::string name, std::string path, FileType file_type)
-	: m_name(name), m_path(path), m_type(file_type)
+	: m_name(name), m_path(path), m_type(file_type), m_last_modified_time(Utils::GetNowTimeToString())
 {
 }
 
+MyFileBase::MyFileBase(std::string name, std::string path, FileType file_type, MyDir &parent_dir)
+	: m_name(name), m_path(path), m_type(file_type), m_last_modified_time(Utils::GetNowTimeToString()), m_parent_dir(&parent_dir)
+{
+}
+
+//MyFileBase::MyFileBase(std::string name, std::string path, FileType file_type, MyDir* parent_dir)
+//	: m_name(name), m_path(path), m_type(file_type)
+//{
+//}
+
 MyFileBase::~MyFileBase()
 {
+	m_parent_dir = nullptr;
 }
 
 std::string MyFileBase::GetName() const
@@ -96,17 +109,17 @@ std::string MyFileBase::GetLastModifiedTime() const
 	return this->m_last_modified_time;
 }
 
-void MyFileBase::SetLastModifiedTime(std::string last_modified_time)
+void MyFileBase::SetLastModifiedTime()
 {
-	this->m_last_modified_time = last_modified_time;
+	this->m_last_modified_time = Utils::GetNowTimeToString();
 }
 
-MyFileBase * MyFileBase::GetParentDir()
+MyDir * MyFileBase::GetParentDir() const
 {
 	return this->m_parent_dir;
 }
 
-void MyFileBase::SetParentDir(MyFileBase *parent_dir)
+void MyFileBase::SetParentDir(MyDir *parent_dir)
 {
 	this->m_parent_dir = parent_dir;
 }

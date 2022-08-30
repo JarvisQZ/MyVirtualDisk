@@ -1,11 +1,15 @@
 #pragma once
-#include "file_type.h"
-#include "utils.h"
+//#include "file_type.h"
+enum class FileType;
+//#include "my_dir.h"
+class MyDir;
+
 class MyFileBase
 {
 public:
 	MyFileBase();
 	MyFileBase(std::string name, std::string path, FileType file_type);
+	MyFileBase(std::string name, std::string path, FileType file_type, MyDir &parent_dir);
 	virtual ~MyFileBase();
 
 	std::string GetName() const;
@@ -19,18 +23,18 @@ public:
 	std::size_t GetSize() const;
 	void SetSize(std::size_t size);
 	std::string GetLastModifiedTime() const;
-	void SetLastModifiedTime(std::string last_modified_time);
+	void SetLastModifiedTime();
 
-	virtual MyFileBase *GetParentDir();
-	void SetParentDir(MyFileBase *parent_dir);
+	MyDir *GetParentDir() const;
+	void SetParentDir(MyDir *parent_dir);
 
 private:
 	std::size_t m_size = 0;
 	std::string m_name = "";
 	std::string m_path = "";
-	FileType m_type = FileType::OTHER;
+	FileType m_type;
 
-	std::string m_last_modified_time = Utils::GetNowTimeToString();
+	std::string m_last_modified_time  = "";
 
-	MyFileBase *m_parent_dir = nullptr;
+	MyDir *m_parent_dir = nullptr;
 };

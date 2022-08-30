@@ -1,5 +1,7 @@
 #include "pch.h"
+#include "utils.h"
 #include "my_dir.h"
+#include "my_file_base.h"
 #include "file_type.h"
 
 
@@ -60,10 +62,25 @@ std::map<std::string, MyDir*> MyDir::GetDirChildren()
 	return dir_children;
 }
 
-MyDir *MyDir::GetParentDir()
+std::vector<std::string> MyDir::GetFileChildren() const
 {
-	return dynamic_cast<MyDir*>(this->MyFileBase::GetParentDir());
+	std::vector<std::string> result;
+	
+	for (auto child : this->m_children)
+	{
+		if (child.second->GetType() == FileType::OTHER)
+		{
+			result.emplace_back(child.first);
+		}
+	}
+
+	return result;
 }
+
+//MyDir *MyDir::GetParentDir()
+//{
+//	return dynamic_cast<MyDir*>(this->MyFileBase::GetParentDir());
+//}
 
 // flag = 1 打印文件夹和文件
 // flag = 0 只打印文件夹
@@ -141,12 +158,22 @@ void MyDir::PrintFileAndDirRecursion(MyDir* current_dir)
 	}
 }
 
+void MyDir::CreateFileOrDir(MyFileBase * new_file)
+{
+	this->m_children[new_file->GetName()] = new_file;
+}
+
 void MyDir::CreateFileOrDir(std::string name, MyFileBase * new_file)
 {
 	boost::to_upper(name);
 	this->m_children[name] = new_file;
-	this->SetLastModifiedTime(Utils::GetNowTimeToString());
+	this->SetLastModifiedTime();
 	this->UpdateDirSizeUpward();
+}
+
+void MyDir::CreateFileOrDir(std::string name, MyFileBase * new_file, bool is_override)
+{
+
 }
 
 void MyDir::DeleteChild(std::string name)
@@ -154,7 +181,7 @@ void MyDir::DeleteChild(std::string name)
 	// 把子文件从map中移除，并没有清理对象
 	boost::to_upper(name);
 	this->m_children.erase(this->m_children.find(name));
-	this->SetLastModifiedTime(Utils::GetNowTimeToString());
+	this->SetLastModifiedTime();
 	this->UpdateDirSizeUpward();
 }
 

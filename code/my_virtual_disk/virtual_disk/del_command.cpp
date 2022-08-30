@@ -1,4 +1,6 @@
 #include "pch.h"
+#include "utils.h"
+#include "file_type.h"
 #include "del_command.h"
 
 

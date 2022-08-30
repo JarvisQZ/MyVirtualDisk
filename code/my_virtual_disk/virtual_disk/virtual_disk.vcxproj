@@ -168,6 +168,7 @@
     <ClInclude Include="md_command.h" />
     <ClInclude Include="mklink_command.h" />
     <ClInclude Include="move_command.h" />
+    <ClInclude Include="my_link.h" />
     <ClInclude Include="my_link_file.h" />
     <ClInclude Include="my_virtual_disk.h" />
     <ClInclude Include="my_dir.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="md_command.cpp" />
     <ClCompile Include="mklink_command.cpp" />
     <ClCompile Include="move_command.cpp" />
+    <ClCompile Include="my_link.cpp" />
     <ClCompile Include="my_link_file.cpp" />
     <ClCompile Include="my_dir.cpp" />
     <ClCompile Include="my_virtual_disk.cpp" />

@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "utils.h"
 #include "md_command.h"
 #include "file_type.h"
 
@@ -29,6 +30,14 @@ void MdCommand::Execute(MyVirtualDisk * virtual_disk)
 
 		for (size_t i = 0; i < path_list.size(); ++i)
 		{
+
+			if (Utils::IsNameIllegal(path_list[i]))
+			{
+				std::cout << "文件名、目录名或卷标语法不正确。" << std::endl;
+				std::cout << std::endl;
+				return;
+			}
+
 			if (i == 0 and path_list[i] == "C:")
 			{
 				if (i == path_list.size() - 1)
@@ -88,6 +97,7 @@ void MdCommand::Execute(MyVirtualDisk * virtual_disk)
 					// 存在重名目录或者文件
 
 					std::cout << "子目录或文件 " << path_list[i] << " 已经存在。" << std::endl;
+					std::cout << std::endl;
 				}
 			}
 		}

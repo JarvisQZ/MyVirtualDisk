@@ -1,4 +1,6 @@
 #include "pch.h"
+#include "utils.h"
+#include "file_type.h"
 #include "ren_command.h"
 
 
@@ -27,6 +29,14 @@ void RenCommand::Execute(MyVirtualDisk * virtual_disk)
 	auto children_dir = current_dir->GetDirChildren();
 
 	auto path_list = Utils::GetSplitPath(src_);
+	auto dst_path_list = Utils::GetSplitPath(dst_);
+
+	if (dst_path_list.size() != 1 or Utils::IsNameIllegal(dst_))
+	{
+		std::cout << "命令语法不正确。" << std::endl;
+		std::cout << std::endl;
+		return;
+	}
 
 	// 遍历路径，定位到要改名的文件夹或者文件的上一级
 	for (size_t i = 0; i < path_list.size() - 1; ++i)
@@ -118,7 +128,8 @@ void RenCommand::Execute(MyVirtualDisk * virtual_disk)
 			src_file->SetName(dst_);
 			src_file->SetPath(current_dir->GenerateDirectPath() + "\\" + dst_);
 			current_dir->CreateFileOrDir(dst_, child_iter->second);
-			current_dir->DeleteChild(src_);
+			//current_dir->DeleteChild(src_);
+			current_dir->DeleteChild(path_list.back());
 
 			std::cout << std::endl;
 			return;
@@ -137,7 +148,8 @@ void RenCommand::Execute(MyVirtualDisk * virtual_disk)
 			src_file->SetPath(current_dir->GenerateDirectPath() + "\\" + dst_);
 			src_file->SetName(dst_);
 			current_dir->CreateFileOrDir(dst_, child_iter->second);
-			current_dir->DeleteChild(src_);
+			//current_dir->DeleteChild(src_);
+			current_dir->DeleteChild(path_list.back());
 
 			std::cout << std::endl;
 			return;

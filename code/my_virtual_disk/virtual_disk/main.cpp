@@ -31,8 +31,6 @@ void run()
 	{
 		
 		std::cout << virtual_disk->GetCurrentDir()->GenerateDirectPath() << ">";
-
-
 		//std::cout << virtual_disk->GetCurrentDir()->GetPath() << ">";
 		std::getline(std::cin, input_command);
 

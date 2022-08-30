@@ -1,7 +1,9 @@
 #include "pch.h"
+#include "utils.h"
 #include "rd_command.h"
 #include "command_type.h"
 #include "my_virtual_disk.h"
+#include "file_type.h"
 
 
 RdCommand::RdCommand()
