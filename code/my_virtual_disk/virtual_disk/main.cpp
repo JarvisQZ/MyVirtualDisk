@@ -5,6 +5,8 @@
 #include "my_virtual_disk.h"
 #include "command_factory.h"
 #include "command_invoker.h"
+#include "utils.h"
+//#include <boost/filesystem.hpp>
 
 void run()
 {
@@ -29,7 +31,7 @@ void run()
 	// 
 	while (!virtual_disk->GetQuitFlag())
 	{
-		
+
 		std::cout << virtual_disk->GetCurrentDir()->GenerateDirectPath() << ">";
 		//std::cout << virtual_disk->GetCurrentDir()->GetPath() << ">";
 		std::getline(std::cin, input_command);
@@ -57,23 +59,31 @@ void run()
 
 void test()
 {
-	std::vector<std::string> s;
-	std::string result;
+	//std::ofstream fout;
+	////std::string path_string = R"(.\.\1.txt)";
+	//std::string path_string = R"(c:\Users\Administrator\Desktop\1\1.txt)";
+	//auto path_list = Utils::GetSplitPath(path_string);
 
+	//auto abs_path = boost::filesystem::complete(path_string);
+	//std::cout << abs_path << std::endl;
 
-	s.push_back("A:");
+	//fout.open(path_string);
+	//if (fout.is_open())
+	//{
+	//	std::cout << "文件打开" << std::endl;
+	//}
+	//else
+	//{
+	//	std::cout << "文件没打开" << std::endl;
+	//}
 
-	if (s.size() == 1)
-	{
-		result = s.back() + "\\";
-	}
-	else
-	{
-		result = boost::join(s, "\\");
-	}
+	//fout.close();
 
-	std::cout << result << std::endl;
+	std::cout << Utils::GetNowTimeToString() << std::endl;
+	std::cout << Utils::GetNowTimeToString() << std::endl;
 
+	std::cout << sizeof(size_t) << std::endl;
+	std::cout << sizeof(std::size_t) << std::endl;
 }
 
 int main()

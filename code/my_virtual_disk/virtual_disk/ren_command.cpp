@@ -127,7 +127,7 @@ void RenCommand::Execute(MyVirtualDisk * virtual_disk)
 			// 先改名字，再向map中添加一个相同的指针，去除之前的指针
 			src_file->SetName(dst_);
 			src_file->SetPath(current_dir->GenerateDirectPath() + "\\" + dst_);
-			current_dir->CreateFileOrDir(dst_, child_iter->second);
+			current_dir->AddChild(dst_, child_iter->second);
 			//current_dir->DeleteChild(src_);
 			current_dir->DeleteChild(path_list.back());
 
@@ -147,7 +147,7 @@ void RenCommand::Execute(MyVirtualDisk * virtual_disk)
 			}
 			src_file->SetPath(current_dir->GenerateDirectPath() + "\\" + dst_);
 			src_file->SetName(dst_);
-			current_dir->CreateFileOrDir(dst_, child_iter->second);
+			current_dir->AddChild(dst_, child_iter->second);
 			//current_dir->DeleteChild(src_);
 			current_dir->DeleteChild(path_list.back());
 

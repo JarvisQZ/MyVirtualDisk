@@ -93,10 +93,10 @@
     <ClInclude Include="save_command.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="LoadCommand.h">
+    <ClInclude Include="load_command.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="my_link.h">
+    <ClInclude Include="my_link_dir.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -176,10 +176,10 @@
     <ClCompile Include="save_command.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="LoadCommand.cpp">
+    <ClCompile Include="load_command.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="my_link.cpp">
+    <ClCompile Include="my_link_dir.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

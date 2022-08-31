@@ -13,7 +13,7 @@
 #include "move_command.h"
 #include "mklink_command.h"
 #include "save_command.h"
-#include "LoadCommand.h"
+#include "load_command.h"
 #include "quit_command.h"
 #include "cls_command.h"
 #include "unknown_command.h"

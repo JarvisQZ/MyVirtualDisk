@@ -59,6 +59,33 @@ bool Utils::IsNameIllegal(std::string name)
 	return true;
 }
 
+// 0 没有，1 目录 2 文件 3 link
+int Utils::IsTargetInDir(MyDir * src_dir, std::string target)
+{
+	auto all_children = src_dir->GetChildren();
+
+	auto child_iter = all_children.find(boost::to_upper_copy(target));
+
+	if (child_iter == all_children.end())
+	{
+		return 0;
+	}
+	
+	if (child_iter->second->GetType() == FileType::DIR)
+	{
+		return 1;
+	}
+	else if (child_iter->second->GetType() == FileType::OTHER)
+	{
+		return 2;
+	}
+	else if (child_iter->second->GetType() == FileType::SYMLINK)
+	{
+		return 3;
+	}
+	
+}
+
 MyDir * Utils::GetPathDir(std::vector<std::string> path_list, bool is_file)
 {
 

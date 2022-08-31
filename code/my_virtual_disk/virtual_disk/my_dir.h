@@ -23,9 +23,9 @@ public:
 
 	void PrintFileAndDirRecursion(MyDir* current_dir);
 
-	void CreateFileOrDir(MyFileBase * new_file);
-	void CreateFileOrDir(std::string name, MyFileBase* new_file);
-	void CreateFileOrDir(std::string name, MyFileBase* new_file, bool is_override);
+	void AddChild(MyFileBase * new_file);
+	void AddChild(std::string name, MyFileBase* new_file);
+	void AddChild(std::string name, MyFileBase* new_file, bool is_override);
 
 	void DeleteChild(std::string name);
 

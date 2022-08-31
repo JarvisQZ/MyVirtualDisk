@@ -10,5 +10,10 @@ public:
 
 	void Execute(MyVirtualDisk* virtual_disk);
 	bool IsCommandCorrect();
+
+private:
+	bool m_is_cover = 0;
+	std::string m_src_path;
+	std::string m_dst_path;
 };
 

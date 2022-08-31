@@ -75,6 +75,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>E:\qinzhi_qinzhi3340_4175\QQX5_Mainland\trunc\src\boost_1_53_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -108,6 +109,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalOptions>/source-charset:utf-8 /execution-charset:gbk %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -164,11 +166,11 @@
     <ClInclude Include="del_command.h" />
     <ClInclude Include="dir_command.h" />
     <ClInclude Include="file_type.h" />
-    <ClInclude Include="LoadCommand.h" />
+    <ClInclude Include="load_command.h" />
     <ClInclude Include="md_command.h" />
     <ClInclude Include="mklink_command.h" />
     <ClInclude Include="move_command.h" />
-    <ClInclude Include="my_link.h" />
+    <ClInclude Include="my_link_dir.h" />
     <ClInclude Include="my_link_file.h" />
     <ClInclude Include="my_virtual_disk.h" />
     <ClInclude Include="my_dir.h" />
@@ -192,11 +194,11 @@
     <ClCompile Include="copy_command.cpp" />
     <ClCompile Include="del_command.cpp" />
     <ClCompile Include="dir_command.cpp" />
-    <ClCompile Include="LoadCommand.cpp" />
+    <ClCompile Include="load_command.cpp" />
     <ClCompile Include="md_command.cpp" />
     <ClCompile Include="mklink_command.cpp" />
     <ClCompile Include="move_command.cpp" />
-    <ClCompile Include="my_link.cpp" />
+    <ClCompile Include="my_link_dir.cpp" />
     <ClCompile Include="my_link_file.cpp" />
     <ClCompile Include="my_dir.cpp" />
     <ClCompile Include="my_virtual_disk.cpp" />

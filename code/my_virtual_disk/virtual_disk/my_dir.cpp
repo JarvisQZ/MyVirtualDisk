@@ -81,7 +81,7 @@ std::map<std::string, MyFile*> MyDir::GetFileChildren() const
 std::vector<std::string> MyDir::GetFileChildrenNameList() const
 {
 	std::vector<std::string> result;
-	
+
 	for (auto child : this->m_children)
 	{
 		if (child.second->GetType() == FileType::OTHER)
@@ -125,25 +125,29 @@ void MyDir::PrintFileAndDir(bool flag)
 
 	for (auto child : this->GetChildren())
 	{
-		if (child.second->GetType() == FileType::DIR)
+		if (child.second->GetType() == FileType::DIR || child.second->GetType() == FileType::SYMLINKD)
 		{
 			++dir_num;
 		}
 		else
 		{
 			++file_num;
-			all_file_size += child.second->GetSize();
+			if (child.second->GetType() == FileType::OTHER)
+			{
+				all_file_size += child.second->GetSize();
+			}
 		}
 		if (flag)
 		{
+			//std::cout.setf(std::ios::left);
 			std::cout << child.second->GetLastModifiedTime()
 				<< std::setfill(' ') << std::setw(9) << child.second->GetTypeToString()
-				<< std::setfill(' ') << std::setw(10) << ((child.second->GetType() == FileType::DIR) ? "" : std::to_string(child.second->GetSize()))
+				<< std::setfill(' ') << std::setw(10) << ((child.second->GetType() == FileType::DIR || child.second->GetType() == FileType::SYMLINKD) ? "" : std::to_string(child.second->GetSize()))
 				<< " " << child.second->GetName() << std::endl;
 		}
 		else
 		{
-			if (child.second->GetType() == FileType::DIR)
+			if (child.second->GetType() == FileType::DIR || child.second->GetType() == FileType::SYMLINKD)
 			{
 				std::cout << child.second->GetLastModifiedTime()
 					<< std::setfill(' ') << std::setw(9) << child.second->GetTypeToString()
@@ -174,12 +178,13 @@ void MyDir::PrintFileAndDirRecursion(MyDir* current_dir)
 	}
 }
 
-void MyDir::CreateFileOrDir(MyFileBase * new_file)
+void MyDir::AddChild(MyFileBase * new_file)
 {
-	this->m_children[new_file->GetName()] = new_file;
+	auto name_upper = boost::to_upper_copy(new_file->GetName());
+	this->m_children[name_upper] = new_file;
 }
 
-void MyDir::CreateFileOrDir(std::string name, MyFileBase * new_file)
+void MyDir::AddChild(std::string name, MyFileBase * new_file)
 {
 	boost::to_upper(name);
 	this->m_children[name] = new_file;
@@ -187,7 +192,7 @@ void MyDir::CreateFileOrDir(std::string name, MyFileBase * new_file)
 	this->UpdateDirSizeUpward();
 }
 
-void MyDir::CreateFileOrDir(std::string name, MyFileBase * new_file, bool is_override)
+void MyDir::AddChild(std::string name, MyFileBase * new_file, bool is_override)
 {
 
 }

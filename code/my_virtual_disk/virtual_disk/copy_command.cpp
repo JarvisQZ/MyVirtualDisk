@@ -85,83 +85,6 @@ bool CopyCommand::WildCardMatching(std::string path, std::string input_path)
 	return dp[m][n];
 }
 
-//MyDir * CopyCommand::GetPathDir(MyVirtualDisk * virtualdisk, std::string path, bool type)
-//{
-//	return nullptr;
-//}
-
-//MyDir * CopyCommand::GetPathDir(MyVirtualDisk * virtual_disk, std::vector<std::string> path_list)
-//{
-//	MyDir *current_dir = virtual_disk->GetCurrentDir();
-//	auto children_dir = current_dir->GetDirChildren();
-//	auto all_children = current_dir->GetChildren();
-//
-//
-//	for (size_t i = 0; i < path_list.size() - 1; ++i)
-//	{
-//		// 绝对路径
-//		if (i == 0 and (path_list[i] == "C:" or path_list[0][0] == '/'))
-//		{
-//			//TODO 根目录情况
-//			current_dir = virtual_disk->GetRootDir();
-//			children_dir = current_dir->GetDirChildren();
-//		}
-//		else if (path_list[i] == "..")
-//		{
-//			current_dir = current_dir->GetParentDir();
-//			children_dir = current_dir->GetDirChildren();
-//		}
-//		else if (path_list[i] == ".")
-//		{
-//			continue;
-//		}
-//		else
-//		{
-//			all_children = current_dir->GetChildren();
-//			if (all_children.find(path_list[i]) == all_children.end())
-//			{
-//				std::cout << "系统找不到指定的文件。" << std::endl;
-//				std::cout << std::endl;
-//				return nullptr;
-//			}
-//			else
-//			{
-//				// 如果找到文件，输出错误信息
-//				if (all_children[path_list[i]]->GetType() == FileType::OTHER)
-//				{
-//					std::cout << "系统找不到指定的文件。" << std::endl;
-//					std::cout << std::endl;
-//					return nullptr;
-//				}
-//				else
-//				{
-//					current_dir = children_dir[path_list[i]];
-//					children_dir = current_dir->GetDirChildren();
-//				}
-//			}
-//		}
-//	}
-//
-//	all_children = current_dir->GetChildren();
-//	if (all_children.find(path_list.back()) == all_children.end())
-//	{
-//		//std::cout << "系统找不到指定的文件。" << std::endl;
-//		//std::cout << std::endl;
-//		//return nullptr;
-//	}
-//	else
-//	{
-//		// 如果最后是文件，返回当前目录
-//		// 是目录，返回目录
-//		if (all_children[path_list.back()]->GetType() != FileType::OTHER)
-//		{
-//			current_dir = children_dir[path_list.back()];
-//			children_dir = current_dir->GetDirChildren();
-//		}
-//	}
-//	return current_dir;
-//}
-
 int CopyCommand::FindFileBase(std::string path)
 {
 	struct stat s;
@@ -261,15 +184,21 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 			new_file->SetParentDir(dst_dir);
 			new_file->SetName(new_file_name);
 			new_file->SetLastModifiedTime();
-			dst_dir->CreateFileOrDir(new_file_name, new_file);
+			dst_dir->AddChild(new_file_name, new_file);
 
 			// 创建成功
+			std::cout <<
+				"已复制" <<
+				std::setfill(' ') <<
+				std::setw(10) <<
+				1 <<
+				" 个文件" << std::endl;
 			std::cout << std::endl;
 
 		}
 		else
 		{
-			// 多个文件拷贝，dst因该是目录
+			// 多个文件拷贝，dst应该是目录
 			dst_dir = Utils::GetPathDir(path_list, false);
 			if (dst_dir == nullptr)
 			{
@@ -279,18 +208,25 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 
 			// 复制
 			auto dst_files = dst_dir->GetChildren();
+			long long i = 0;
 			for (auto file : this->m_target_files)
 			{
 				// 新建文件
-
 				MyFile * new_file = new MyFile(*static_cast<MyFile*>(current_dir->GetChildren()[this->m_target_files[0]]));
 				new_file->SetPath(dst_dir->GenerateDirectPath() + "\\" + dst_dir->GetName());
 				new_file->SetParentDir(dst_dir);
 				new_file->SetName(file);
 				new_file->SetLastModifiedTime();
-				dst_dir->CreateFileOrDir(file, new_file);
+				dst_dir->AddChild(file, new_file);
+				++i;
 			}
 			// 创建成功
+			std::cout <<
+				"已复制" <<
+				std::setfill(' ') <<
+				std::setw(10) <<
+				i <<
+				" 个文件" << std::endl;
 			std::cout << std::endl;
 		}
 		break;
@@ -335,11 +271,17 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 			MyFile* new_file = new MyFile(new_file_name, path, *dst_dir);
 
 			new_file->SetContent(buffer, size);
-			dst_dir->CreateFileOrDir(new_file_name, new_file);
+			dst_dir->AddChild(new_file_name, new_file);
 
 			buffer = nullptr;
 
 			// 创建成功
+			std::cout <<
+				"已复制" <<
+				std::setfill(' ') <<
+				std::setw(10) <<
+				1 <<
+				" 个文件" << std::endl;
 			std::cout << std::endl;
 		}
 		else
@@ -356,6 +298,7 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 			std::string path;
 
 			// 每打开一个文件，将它按字节读取到内存
+			long long i = 0;
 			for (auto file : this->m_target_files)
 			{
 				std::ifstream fin(this->m_target_dir + file, std::ios::in | std::ios::binary | std::ios::ate);
@@ -377,11 +320,18 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 				MyFile* new_file = new MyFile(file, path, *dst_dir);
 
 				new_file->SetContent(buffer, size);
-				dst_dir->CreateFileOrDir(file, new_file);
+				dst_dir->AddChild(file, new_file);
+				++i;
 
 				buffer = nullptr;
 			}
 			// 创建成功
+			std::cout <<
+				"已复制" <<
+				std::setfill(' ') <<
+				std::setw(10) <<
+				i <<
+				" 个文件" << std::endl;
 			std::cout << std::endl;
 		}
 	}

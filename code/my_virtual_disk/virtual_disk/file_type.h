@@ -3,5 +3,6 @@ enum class FileType
 {
 	OTHER,
 	DIR,
-	MLINK,
+	SYMLINK,
+	SYMLINKD,
 };

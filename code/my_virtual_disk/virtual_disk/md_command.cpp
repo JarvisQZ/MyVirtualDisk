@@ -88,7 +88,7 @@ void MdCommand::Execute(MyVirtualDisk * virtual_disk)
 					}
 
 					// 创建文件夹
-					current_dir->CreateFileOrDir(path_list[i], new_dir);
+					current_dir->AddChild(path_list[i], new_dir);
 					current_dir = new_dir;
 					children_dir = current_dir->GetDirChildren();
 				}

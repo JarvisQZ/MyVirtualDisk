@@ -147,7 +147,7 @@ void DelCommand::Execute(MyVirtualDisk * virtual_disk)
 
 					}
 				}
-				else if (child_iter->second->GetType() == FileType::MLINK)
+				else if (child_iter->second->GetType() == FileType::SYMLINK)
 				{
 					// TODO
 				}

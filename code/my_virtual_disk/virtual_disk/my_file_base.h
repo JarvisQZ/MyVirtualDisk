@@ -17,8 +17,8 @@ public:
 	std::string GetPath() const;
 	std::string GenerateDirectPath();
 	void SetPath(std::string path);
-	std::string GetTypeToString() const;
-	FileType GetType() const;
+	virtual std::string GetTypeToString() const;
+	virtual FileType GetType() const;
 	void SetType(FileType file_type);
 	std::size_t GetSize() const;
 	void SetSize(std::size_t size);
