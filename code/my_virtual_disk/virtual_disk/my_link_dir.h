@@ -8,6 +8,7 @@ class MyLinkDir :
 public:
 	MyLinkDir();
 	MyLinkDir(MyDir *target_dir, std::string name, std::string link_path);
+	MyLinkDir(MyLinkDir *target_dir, std::string name, std::string link_path);
 	virtual ~MyLinkDir();
 
 	MyDir &GetLinkDir() const;

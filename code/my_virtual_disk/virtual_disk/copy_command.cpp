@@ -93,7 +93,6 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 		if (path_list.size() == 1)// 当前目录
 		{
 			regex = path_list[0];
-			boost::to_upper(regex);
 			all_file_name = current_dir->GetFileChildrenNameList();
 		}
 		else
@@ -109,7 +108,6 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 			all_file_name = current_dir->GetFileChildrenNameList();
 
 			regex = path_list.back();
-			boost::to_upper(regex);
 		}
 
 		for (auto file_name : all_file_name)
@@ -137,10 +135,11 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 				return;
 			}
 			new_file_name = path_list.back();
+			auto file_name_upper = boost::to_upper_copy(new_file_name);
 			auto dst_files = dst_dir->GetChildren();
 
 			// 如果src是文件且存在重名文件
-			if (dst_files.find(new_file_name) != dst_files.end())
+			if (dst_files.find(file_name_upper) != dst_files.end())
 			{
 				std::cout << "子目录或文件 " << new_file_name << " 已经存在。" << std::endl;
 				std::cout << std::endl;
@@ -149,7 +148,7 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 
 			// 新建文件
 
-			MyFile * new_file = new MyFile(*static_cast<MyFile*>(current_dir->GetChildren()[this->m_target_files[0]]));
+			MyFile * new_file = new MyFile(*static_cast<MyFile*>(current_dir->GetChildren()[file_name_upper]));
 			new_file->SetPath(dst_dir->GenerateDirectPath() + "\\" + dst_dir->GetName());
 			new_file->SetParentDir(dst_dir);
 			new_file->SetName(new_file_name);
@@ -181,8 +180,17 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 			long long i = 0;
 			for (auto file : this->m_target_files)
 			{
+
+				auto new_file_name = boost::to_upper_copy(file);
+				// 如果src是文件且存在重名文件
+				if (dst_files.find(new_file_name) != dst_files.end())
+				{
+					std::cout << "子目录或文件 " << file << " 已经存在。" << std::endl;
+					continue;
+				}
+
 				// 新建文件
-				MyFile * new_file = new MyFile(*static_cast<MyFile*>(current_dir->GetChildren()[this->m_target_files[0]]));
+				MyFile * new_file = new MyFile(*static_cast<MyFile*>(current_dir->GetChildren()[new_file_name]));
 				new_file->SetPath(dst_dir->GenerateDirectPath() + "\\" + dst_dir->GetName());
 				new_file->SetParentDir(dst_dir);
 				new_file->SetName(file);
@@ -216,6 +224,16 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 			new_file_name = dst_path_list.back();
 			if (dst_dir == nullptr)
 			{
+				return;
+			}
+			auto dst_files = dst_dir->GetFileChildren();
+
+			auto file_name_upper = boost::to_upper_copy(new_file_name);
+			// 如果src是文件且存在重名文件
+			if (dst_files.find(file_name_upper) != dst_files.end())
+			{
+				std::cout << "子目录或文件 " << new_file_name << " 已经存在。" << std::endl;
+				std::cout << std::endl;
 				return;
 			}
 
@@ -266,11 +284,20 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 			char *buffer;
 			std::size_t size;
 			std::string path;
+			auto dst_files = dst_dir->GetFileChildren();
 
 			// 每打开一个文件，将它按字节读取到内存
 			long long i = 0;
 			for (auto file : this->m_target_files)
 			{
+				auto new_file_name = boost::to_upper_copy(file);
+				// 如果src是文件且存在重名文件
+				if (dst_files.find(new_file_name) != dst_files.end())
+				{
+					std::cout << "子目录或文件 " << file << " 已经存在。" << std::endl;
+					continue;
+				}
+
 				std::ifstream fin(this->m_target_dir + file, std::ios::in | std::ios::binary | std::ios::ate);
 				size = static_cast<size_t>(fin.tellg()) + 1;
 

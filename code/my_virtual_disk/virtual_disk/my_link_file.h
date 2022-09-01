@@ -7,7 +7,8 @@ class MyLinkFile :
 {
 public:
 	MyLinkFile();
-	MyLinkFile(MyFile *target_file,std::string name, std::string link_path);
+	MyLinkFile(std::string name, MyFile *target_file, std::string link_path);
+	MyLinkFile(MyLinkFile *target_file,std::string name, std::string link_path);
 	virtual ~MyLinkFile();
 
 	MyFile &GetLinkFile() const;

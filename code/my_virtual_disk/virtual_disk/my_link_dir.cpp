@@ -14,6 +14,12 @@ MyLinkDir::MyLinkDir(MyDir * target_dir, std::string name, std::string link_path
 {
 }
 
+MyLinkDir::MyLinkDir(MyLinkDir * target_dir, std::string name, std::string link_path)
+	: MyFileBase(name, link_path, FileType::SYMLINKD),
+	m_link(&target_dir->GetLinkDir())
+{
+}
+
 
 MyLinkDir::~MyLinkDir()
 {

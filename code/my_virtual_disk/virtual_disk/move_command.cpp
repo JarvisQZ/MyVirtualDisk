@@ -99,14 +99,14 @@ void MoveCommand::Execute(MyVirtualDisk * virtual_disk)
 		else if (dst_flag == 2)
 		{
 			// 原文件改名
-			src_dir->GetChildren().find(src_path_list.back())->second->SetName(dst_name);
+			src_dir->GetChildren().find(src_name_upper)->second->SetName(dst_name);
 			// 覆盖目标文件夹下的同名文件，就是删除
-			delete dst_dir->GetChildren().find(dst_path_list.back())->second;
-			dst_dir->DeleteChild(dst_path_list.back());
+			delete dst_dir->GetChildren().find(dst_name_upper)->second;
+			dst_dir->DeleteChild(dst_name_upper);
 			// 在目标文件夹下添加源文件
-			dst_dir->AddChild(src_dir->GetChildren().find(src_path_list.back())->second);
+			dst_dir->AddChild(src_dir->GetChildren().find(src_name_upper)->second);
 			// 在源文件夹删除
-			src_dir->DeleteChild(src_path_list.back());
+			src_dir->DeleteChild(src_name_upper);
 		}
 		else if (dst_flag == 3)
 		{

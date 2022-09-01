@@ -25,11 +25,54 @@ std::string Utils::GetNowTimeToString()
 //	return command_parameters[0];
 //}
 
+std::deque<std::string> my_split(std::string command)
+{
+	std::deque<std::string> command_parameters;
+	size_t pos;
+	while (1)
+	{
+		boost::trim(command); // 去除两边空格
+		//cout << "--" << CommandOrder << "--" << endl;
+		if (command == "")
+			break;
+		if (command[0] == '"')
+		{
+			pos = command.find('"', 2);
+			if (pos != std::string::npos)
+			{
+				command_parameters.push_back(command.substr(1, pos - 1));
+				command = command.substr(pos + 1, command.length());
+			}
+		}
+		else
+		{
+			pos = command.find(' ');
+			//cout << TempCommandOrder.substr(0, pos) << "-s" << endl;
+			command_parameters.push_back(command.substr(0, pos));
+			if (pos == std::string::npos)
+				break;
+			command = command.substr(pos, command.length());
+		}
+	}
+
+	return command_parameters;
+}
+
 std::deque<std::string> Utils::GetCommandParameters(std::string command)
 {
-	boost::trim(command);
 	std::deque<std::string> command_parameters;
-	boost::split(command_parameters, command, boost::is_space(), boost::token_compress_on);
+
+	// 可能的命令：             Cd ././\\.\\.\\.\\.\\../../"中文 空格 目录"/文件    第二个参数
+	boost::trim(command); // 去除两边空格
+	// 按照空格分割，重复空格算一个空格
+	// 但不能支持名字带空格的目录
+	//boost::split(command_parameters, command, boost::is_space(), boost::token_compress_on);
+
+	command_parameters = my_split(command);
+	if (command_parameters.size() == 0)
+	{
+		command_parameters.push_back("");
+	}
 	return command_parameters;
 
 }
@@ -60,7 +103,7 @@ bool Utils::IsNameIllegal(std::string name)
 	return true;
 }
 
-// 0 没有，1 目录 2 文件 3 link
+// 0 没有，1 目录 2 文件 3 link 4 linkd
 int Utils::IsTargetInDir(MyDir * src_dir, std::string target)
 {
 	auto all_children = src_dir->GetChildren();
@@ -84,7 +127,10 @@ int Utils::IsTargetInDir(MyDir * src_dir, std::string target)
 	{
 		return 3;
 	}
-
+	else if (child_iter->second->GetType() == FileType::SYMLINKD)
+	{
+		return 4;
+	}
 }
 
 MyDir * Utils::GetPathDir(std::vector<std::string> path_list, bool is_file)
@@ -123,7 +169,8 @@ MyDir * Utils::GetPathDir(std::vector<std::string> path_list, bool is_file)
 		else
 		{
 			all_children = current_dir->GetChildren();
-			if (all_children.find(path_list[i]) == all_children.end())
+			auto name_upper = boost::to_upper_copy(path_list[i]);
+			if (all_children.find(name_upper) == all_children.end())
 			{
 				std::cout << "系统找不到指定的文件。" << std::endl;
 				std::cout << std::endl;
@@ -132,7 +179,7 @@ MyDir * Utils::GetPathDir(std::vector<std::string> path_list, bool is_file)
 			else
 			{
 				// 如果找到文件，输出错误信息
-				if (all_children[path_list[i]]->GetType() == FileType::OTHER)
+				if (all_children[name_upper]->GetType() == FileType::OTHER)
 				{
 					std::cout << "系统找不到指定的文件。" << std::endl;
 					std::cout << std::endl;
@@ -140,7 +187,7 @@ MyDir * Utils::GetPathDir(std::vector<std::string> path_list, bool is_file)
 				}
 				else
 				{
-					current_dir = children_dir[path_list[i]];
+					current_dir = children_dir[name_upper];
 					children_dir = current_dir->GetDirChildren();
 				}
 			}
@@ -170,6 +217,8 @@ MyDir * Utils::GetPathDir(std::vector<std::string> path_list, bool is_file)
 
 bool Utils::WildCardMatching(std::string path, std::string input_path)
 {
+	boost::to_upper(path);
+	boost::to_upper(input_path);
 	auto m = path.size();
 	auto n = input_path.size();
 

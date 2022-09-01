@@ -1,6 +1,8 @@
 #pragma once
 #include "my_file_base.h"
 class MyFile;
+class MyLinkFile;
+class MyLinkDir;
 
 class MyDir
 	: public MyFileBase
@@ -13,6 +15,10 @@ public:
 	std::map<std::string, MyFileBase *> GetChildren() const;
 	std::map<std::string, MyDir*> GetDirChildren() const;
 	std::map<std::string, MyFile*> GetFileChildren() const;
+	std::map<std::string, MyLinkFile*> GetLinkFileChildren() const;
+	std::map<std::string, MyLinkDir*> GetLinkDirChildren() const;
+
+
 
 
 	std::vector<std::string> GetFileChildrenNameList() const;
@@ -20,16 +26,16 @@ public:
 	//virtual MyDir * GetParentDir() override;
 
 	void PrintFileAndDir(bool flag);
-
 	void PrintFileAndDirRecursion(MyDir* current_dir);
+
+	void DeleteFileInDir(MyDir* targetdir);
+	void DeleteFileInDirRecursion(MyDir* targetdir);
 
 	void AddChild(MyFileBase * new_file);
 	void AddChild(std::string name, MyFileBase* new_file);
 	void AddChild(std::string name, MyFileBase* new_file, bool is_override);
 
 	void DeleteChild(std::string name);
-
-	void UpdateDirSizeUpward();
 
 private:
 	std::map<std::string, MyFileBase *> m_children;

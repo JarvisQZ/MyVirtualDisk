@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "utils.h"
+#include "my_file_base.h"
 #include "my_dir.h"
 #include "my_file.h"
-#include "my_file_base.h"
+#include "my_link_file.h"
+#include "my_link_dir.h"
 #include "file_type.h"
 
 
@@ -78,6 +80,36 @@ std::map<std::string, MyFile*> MyDir::GetFileChildren() const
 	return file_children;
 }
 
+std::map<std::string, MyLinkFile*> MyDir::GetLinkFileChildren() const
+{
+	std::map<std::string, MyLinkFile*> link_file_children;
+
+	for (auto children : this->GetChildren())
+	{
+		if (children.second->GetType() == FileType::SYMLINK)
+		{
+			link_file_children.insert_or_assign(children.first, static_cast<MyLinkFile*>(children.second));
+		}
+	}
+
+	return link_file_children;
+}
+
+std::map<std::string, MyLinkDir*> MyDir::GetLinkDirChildren() const
+{
+	std::map<std::string, MyLinkDir*> link_dir_children;
+
+	for (auto children : this->GetChildren())
+	{
+		if (children.second->GetType() == FileType::SYMLINKD)
+		{
+			link_dir_children.insert_or_assign(children.first, static_cast<MyLinkDir*>(children.second));
+		}
+	}
+
+	return link_dir_children;
+}
+
 std::vector<std::string> MyDir::GetFileChildrenNameList() const
 {
 	std::vector<std::string> result;
@@ -86,17 +118,12 @@ std::vector<std::string> MyDir::GetFileChildrenNameList() const
 	{
 		if (child.second->GetType() == FileType::OTHER or child.second->GetType() == FileType::SYMLINK)
 		{
-			result.emplace_back(child.first);
+			result.emplace_back(child.second->GetName());
 		}
 	}
 
 	return result;
 }
-
-//MyDir *MyDir::GetParentDir()
-//{
-//	return dynamic_cast<MyDir*>(this->MyFileBase::GetParentDir());
-//}
 
 // flag = 1 打印文件夹和文件
 // flag = 0 只打印文件夹
@@ -139,22 +166,48 @@ void MyDir::PrintFileAndDir(bool flag)
 		}
 		if (flag)
 		{
-			//std::cout.setf(std::ios::left);
-			std::cout << child.second->GetLastModifiedTime()
-				<< std::setw(9) << child.second->GetTypeToString()
-				<< std::setw(10) << ((child.second->GetType() != FileType::OTHER) ? "" : std::to_string(child.second->GetSize()))
-				<< " " << child.second->GetName() 
-				<< ((child.second->GetType() == FileType::DIR or child.second->GetType() == FileType::OTHER) ? "" : " ["+child.second->GetPath()+"]")
-				<<std::endl;
+			std::cout << child.second->GetLastModifiedTime() << "    ";
+
+			if (child.second->GetType() != FileType::OTHER)
+			{
+				std::cout << std::setiosflags(std::ios::left);
+				std::cout << std::setw(15) << child.second->GetTypeToString();
+				std::cout << std::resetiosflags(std::ios::left);
+			}
+			else
+			{
+				std::cout << std::setiosflags(std::ios::right);
+				std::cout << std::setw(15) << std::to_string(child.second->GetSize());
+				std::cout << std::resetiosflags(std::ios::right);
+			}
+
+			std::cout << " " << child.second->GetName();
+
+			if (!(child.second->GetType() == FileType::DIR or child.second->GetType() == FileType::OTHER))
+			{
+				std::cout << " [" + child.second->GetPath() + "]";
+			}
+
+			std::cout << std::endl;
 		}
 		else
 		{
 			if (child.second->GetType() == FileType::DIR || child.second->GetType() == FileType::SYMLINKD)
 			{
-				std::cout << child.second->GetLastModifiedTime()
-					<< std::setw(9) << child.second->GetTypeToString()
-					<< std::setw(10) << ""
-					<< " " << child.second->GetName() << std::endl;
+				std::cout << child.second->GetLastModifiedTime() << "    ";
+
+				std::cout << std::setiosflags(std::ios::left);
+				std::cout << std::setw(15) << child.second->GetTypeToString();
+				std::cout << std::resetiosflags(std::ios::left);
+
+				std::cout << " " << child.second->GetName();
+
+				if (!(child.second->GetType() == FileType::DIR or child.second->GetType() == FileType::OTHER))
+				{
+					std::cout << " [" + child.second->GetPath() + "]";
+				}
+
+				std::cout << std::endl;
 			}
 		}
 	}
@@ -163,7 +216,6 @@ void MyDir::PrintFileAndDir(bool flag)
 		std::cout << std::setfill(' ') << std::setw(16) << file_num << " 个文件"
 			<< std::setfill(' ') << std::setw(16) << all_file_size << " 字节" << std::endl;
 	}
-
 	std::cout << std::setfill(' ') << std::setw(16) << file_num << " 个文件" << std::endl << std::endl;
 }
 
@@ -180,6 +232,39 @@ void MyDir::PrintFileAndDirRecursion(MyDir* current_dir)
 	}
 }
 
+void MyDir::DeleteFileInDir(MyDir* targetdir)
+{
+	for (auto &file : targetdir->GetChildren())
+	{
+		if (file.second->GetType() != FileType::DIR)
+		{
+			// 子指向父目录置空
+			file.second->SetParentDir(nullptr);
+			delete file.second;
+			file.second = nullptr;
+			this->m_children.erase(file.first);
+		}
+	}
+}
+
+void MyDir::DeleteFileInDirRecursion(MyDir* targetdir)
+{
+	for (auto &dir : targetdir->GetChildren())
+	{
+		if (dir.second->GetType() == FileType::DIR)
+		{
+			this->DeleteFileInDirRecursion(static_cast<MyDir*>(dir.second));
+		}
+		else
+		{
+			dir.second->SetParentDir(nullptr);
+			delete dir.second;
+			dir.second = nullptr;
+			targetdir->m_children.erase(dir.first);
+		}
+	}
+}
+
 void MyDir::AddChild(MyFileBase * new_file)
 {
 	auto name_upper = boost::to_upper_copy(new_file->GetName());
@@ -191,7 +276,6 @@ void MyDir::AddChild(std::string name, MyFileBase * new_file)
 	boost::to_upper(name);
 	this->m_children[name] = new_file;
 	this->SetLastModifiedTime();
-	this->UpdateDirSizeUpward();
 }
 
 void MyDir::AddChild(std::string name, MyFileBase * new_file, bool is_override)
@@ -205,24 +289,5 @@ void MyDir::DeleteChild(std::string name)
 	boost::to_upper(name);
 	this->m_children.erase(this->m_children.find(name));
 	this->SetLastModifiedTime();
-	this->UpdateDirSizeUpward();
-}
-
-void MyDir::UpdateDirSizeUpward()
-{
-	MyDir* dir_ptr = nullptr;
-	MyDir* old_dir = nullptr;
-
-	while (dir_ptr != old_dir)
-	{
-		std::size_t size = 0;
-		for (auto f : dir_ptr->GetChildren())
-		{
-			size += f.second->GetSize();
-		}
-		dir_ptr->SetSize(size);
-		old_dir = dir_ptr;
-		dir_ptr = static_cast<MyDir*>(dir_ptr->MyFileBase::GetParentDir());
-	}
 }
 

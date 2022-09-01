@@ -2,6 +2,7 @@
 #include "cd_command.h"
 #include "utils.h"
 #include "file_type.h"
+#include "my_link_dir.h"
 
 CdCommand::CdCommand()
 {
@@ -61,9 +62,15 @@ void CdCommand::Execute(MyVirtualDisk * virtual_disk)
 			else
 			{
 				// 找到了，如果是文件，报错
-				if (all_children.find(boost::to_upper_copy(path_list[i]))->second->GetType() == FileType::OTHER)
+				auto target_type = all_children.find(boost::to_upper_copy(path_list[i]))->second->GetType();
+				if (target_type == FileType::OTHER or target_type == FileType::SYMLINK)
 				{
 					std::cout << "目录名称无效。" << std::endl;
+				}
+				else if (target_type == FileType::SYMLINKD)
+				{
+					auto children_linkd = current_dir->GetLinkDirChildren();
+					current_dir = &children_linkd.find(boost::to_upper_copy(path_list[i]))->second->GetLinkDir();
 				}
 				else
 				{

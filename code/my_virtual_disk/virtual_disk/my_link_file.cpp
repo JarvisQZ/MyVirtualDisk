@@ -8,9 +8,15 @@ MyLinkFile::MyLinkFile()
 {
 }
 
-MyLinkFile::MyLinkFile(MyFile * target_file, std::string link_name, std::string link_path)
+MyLinkFile::MyLinkFile(std::string link_name, MyFile * target_file, std::string link_path)
 	:MyFileBase(link_name, link_path, FileType::SYMLINK),
 	m_link(target_file)
+{
+}
+
+MyLinkFile::MyLinkFile(MyLinkFile * target_file, std::string name, std::string link_path)
+	: MyFileBase(name, link_path, FileType::SYMLINK),
+	m_link(&target_file->GetLinkFile())
 {
 }
 

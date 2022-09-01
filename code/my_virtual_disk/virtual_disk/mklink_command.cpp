@@ -46,6 +46,7 @@ void MklinkCommand::Execute(MyVirtualDisk * virtual_disk)
 	// 1 DIR
 	// 2 FILE
 	// 3 Link
+	// 4 LinkD
 	int src_flag = Utils::IsTargetInDir(src_dir, src_path_list.back());
 	int dst_flag = Utils::IsTargetInDir(dst_dir, dst_path_list.back());
 
@@ -59,7 +60,7 @@ void MklinkCommand::Execute(MyVirtualDisk * virtual_disk)
 	if (src_flag == 0) // wu
 	{
 		// 源 不存在，创建一个无效的link
-		auto new_link_file = new MyLinkFile(nullptr, dst_name, command_parameters[1]);
+		auto new_link_file = new MyLinkFile(dst_name, nullptr, command_parameters[1]);
 		// 添加到目录下
 		dst_dir->AddChild(dst_name, new_link_file);
 		// 打印信息
@@ -83,7 +84,7 @@ void MklinkCommand::Execute(MyVirtualDisk * virtual_disk)
 	{
 		// 源 file
 		auto src_file = src_dir->GetFileChildren().find(src_name_upper)->second;
-		auto new_link_file = new MyLinkFile(src_file, dst_name, src_dir->GetPath() + "\\" + src_name);
+		auto new_link_file = new MyLinkFile(dst_name, src_file, src_dir->GetPath() + "\\" + src_name);
 		// 添加到目录下
 		dst_dir->AddChild(dst_name, new_link_file);
 		// 打印信息
@@ -94,7 +95,27 @@ void MklinkCommand::Execute(MyVirtualDisk * virtual_disk)
 	}
 	else if (src_flag == 3) // link
 	{
-
+		// 源 Link
+		auto src_link_file = src_dir->GetLinkFileChildren().find(src_name_upper)->second;
+		auto new_link_file = new MyLinkFile(src_link_file, dst_name, src_dir->GetPath() + "\\" + src_name);
+		// 添加到目录下
+		dst_dir->AddChild(dst_name, new_link_file);
+		// 打印信息
+		std::cout << "为 " << dst_name << " <<===>> " << src_name << " 创建的符号链接" << std::endl;
+		std::cout << std::endl;
+		return;
+	}
+	else if (src_flag == 4) // linkd
+	{
+		// 源 是一个LinkD，创建一个linkd
+		auto src_link_dir = src_dir->GetLinkDirChildren().find(src_name_upper)->second;
+		auto new_link_dir = new MyLinkDir(src_link_dir, dst_name, src_link_dir->GetPath());
+		// 添加到目标目录下
+		dst_dir->AddChild(dst_name, new_link_dir);
+		// 打印信息
+		std::cout << "为 " << dst_name << " <<===>> " << src_name << " 创建的符号链接" << std::endl;
+		std::cout << std::endl;
+		return;
 	}
 
 

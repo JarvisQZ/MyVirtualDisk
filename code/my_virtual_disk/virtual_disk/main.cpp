@@ -59,46 +59,19 @@ void run()
 
 void test()
 {
-	//std::ofstream fout;
-	//std::string path_string = R"(.\"1 2\1.txt)";
-	std::string path_string = "\"1 2";
-
-	boost::trim(path_string);
-	for (auto cha : path_string)
-	{
-
-		std::cout << cha << std::endl;
-	}
-	auto path_list = Utils::GetSplitPath(path_string);
-	//std::string path_string = R"(c:\Users\Administrator\Desktop\1\1.txt)";
-	//auto path_list = Utils::GetSplitPath(path_string);
-
-	//auto abs_path = boost::filesystem::complete(path_string);
-	//std::cout << abs_path << std::endl;
-
-	//fout.open(path_string);
-	//if (fout.is_open())
-	//{
-	//	std::cout << "文件打开" << std::endl;
-	//}
-	//else
-	//{
-	//	std::cout << "文件没打开" << std::endl;
-	//}
-
-	//fout.close();
+	std::string path_string = "MD 123 234/345 \"中文 空格\"";
+	auto path_list = Utils::GetCommandParameters(path_string);
 
 	for (auto path : path_list)
 	{
-
 		std::cout << path << std::endl;
 	}
+	std::cout << "123" << std::endl;
 
-	//std::cout << Utils::GetNowTimeToString() << std::endl;
-	//std::cout << Utils::GetNowTimeToString() << std::endl;
-
-	//std::cout << sizeof(size_t) << std::endl;
-	//std::cout << sizeof(std::size_t) << std::endl;
+	std::cout << std::setiosflags(std::ios::left) << std::setw(10) << 1000 << "\n";
+	std::cout << std::setiosflags(std::ios::right) << std::setw(10) << 1000 << "\n";
+	std::cout << std::setiosflags(std::ios::left) << std::setw(10) << 1000 << "\n";
+	std::cout << std::setiosflags(std::ios::right) << std::setw(10) << 1000 << std::endl;
 }
 
 int main()
