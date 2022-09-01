@@ -28,7 +28,7 @@ void MoveCommand::Execute(MyVirtualDisk * virtual_disk)
 	auto dst_name_upper = boost::to_upper_copy(dst_name);
 	// 假设是文件，找到上一级目录
 	auto src_dir = Utils::GetPathDir(src_path_list, true);
-	auto dst_dir = Utils::GetPathDir(src_path_list, true);
+	auto dst_dir = Utils::GetPathDir(dst_path_list, true);
 
 	if (src_dir == nullptr || dst_dir == nullptr)
 	{

@@ -1,13 +1,16 @@
 #include "pch.h"
 #include "my_link_file.h"
+#include "file_type.h"
+#include "my_file.h"
 
 
 MyLinkFile::MyLinkFile()
 {
 }
 
-MyLinkFile::MyLinkFile(MyFile * target_file, FileType link_type, std::string link_path)
-	:m_link(target_file), m_link_type(link_type), m_link_path(link_path)
+MyLinkFile::MyLinkFile(MyFile * target_file, std::string link_name, std::string link_path)
+	:MyFileBase(link_name, link_path, FileType::SYMLINK),
+	m_link(target_file)
 {
 }
 
@@ -25,30 +28,14 @@ MyFile & MyLinkFile::GetLinkFile() const
 void MyLinkFile::SetLinkFile(MyFile * target_file)
 {
 	this->m_link = target_file;
-	this->m_link_path = target_file->GenerateDirectPath();
 }
 
 std::string MyLinkFile::GetLinkPath() const
 {
-	return this->m_link_path;
+	return this->m_link->GetPath();
 }
 
 void MyLinkFile::SetLinkPath(std::string path)
 {
-	this->m_link_path = path;
-}
-
-FileType MyLinkFile::GetLinkType() const
-{
-	return this->m_link_type;
-}
-
-std::string MyLinkFile::GetTypeToString() const
-{
-	return "<SYMLINK>";
-}
-
-FileType MyLinkFile::GetType() const
-{
-	return this->m_link_type;
+	this->m_link->SetPath(path);
 }

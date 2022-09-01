@@ -81,7 +81,20 @@ void MyFileBase::SetPath(std::string path)
 
 std::string MyFileBase::GetTypeToString() const
 {
-	return this->m_type == FileType::DIR ? "<DIR>" : "     ";
+	std::string type = "     ";
+	if (this->m_type == FileType::DIR)
+	{
+		type = "<DIR>";
+	}
+	else if (this->m_type == FileType::SYMLINK)
+	{
+		type = "<SYMLINK>";
+	}
+	else if (this->m_type == FileType::SYMLINKD)
+	{
+		type = "<SYMLINKD>";
+	}
+	return type;
 }
 
 FileType MyFileBase::GetType() const

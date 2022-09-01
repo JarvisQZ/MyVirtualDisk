@@ -141,17 +141,19 @@ void MyDir::PrintFileAndDir(bool flag)
 		{
 			//std::cout.setf(std::ios::left);
 			std::cout << child.second->GetLastModifiedTime()
-				<< std::setfill(' ') << std::setw(9) << child.second->GetTypeToString()
-				<< std::setfill(' ') << std::setw(10) << ((child.second->GetType() == FileType::DIR || child.second->GetType() == FileType::SYMLINKD) ? "" : std::to_string(child.second->GetSize()))
-				<< " " << child.second->GetName() << std::endl;
+				<< std::setw(9) << child.second->GetTypeToString()
+				<< std::setw(10) << ((child.second->GetType() != FileType::OTHER) ? "" : std::to_string(child.second->GetSize()))
+				<< " " << child.second->GetName() 
+				<< ((child.second->GetType() == FileType::DIR or child.second->GetType() == FileType::OTHER) ? "" : " ["+child.second->GetPath()+"]")
+				<<std::endl;
 		}
 		else
 		{
 			if (child.second->GetType() == FileType::DIR || child.second->GetType() == FileType::SYMLINKD)
 			{
 				std::cout << child.second->GetLastModifiedTime()
-					<< std::setfill(' ') << std::setw(9) << child.second->GetTypeToString()
-					<< std::setfill(' ') << std::setw(10) << ""
+					<< std::setw(9) << child.second->GetTypeToString()
+					<< std::setw(10) << ""
 					<< " " << child.second->GetName() << std::endl;
 			}
 		}

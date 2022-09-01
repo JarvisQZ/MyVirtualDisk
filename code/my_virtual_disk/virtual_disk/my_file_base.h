@@ -12,7 +12,7 @@ public:
 	MyFileBase(std::string name, std::string path, FileType file_type, MyDir &parent_dir);
 	virtual ~MyFileBase();
 
-	std::string GetName() const;
+	virtual std::string GetName() const;
 	void SetName(std::string name);
 	std::string GetPath() const;
 	std::string GenerateDirectPath();
