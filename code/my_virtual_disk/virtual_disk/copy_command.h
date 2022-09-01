@@ -11,9 +11,6 @@ public:
 	//获取磁盘目录下所有文件的名字，返回状态
 	bool GetFileNames(std::string path, std::vector<std::string>& files);
 
-	// 通配符
-	bool WildCardMatching(std::string path, std::string inputpath);
-
 	//返回目录指针，如果type=true，则path必须是一个文件夹路径，如果type=false，给定的path是一个文件路径，返回文件父目录
 	//MyDir* GetPathDir(MyVirtualDisk* virtualdisk, std::string path, bool type);
 

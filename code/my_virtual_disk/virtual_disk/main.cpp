@@ -60,7 +60,16 @@ void run()
 void test()
 {
 	//std::ofstream fout;
-	////std::string path_string = R"(.\.\1.txt)";
+	//std::string path_string = R"(.\"1 2\1.txt)";
+	std::string path_string = "\"1 2";
+
+	boost::trim(path_string);
+	for (auto cha : path_string)
+	{
+
+		std::cout << cha << std::endl;
+	}
+	auto path_list = Utils::GetSplitPath(path_string);
 	//std::string path_string = R"(c:\Users\Administrator\Desktop\1\1.txt)";
 	//auto path_list = Utils::GetSplitPath(path_string);
 
@@ -79,18 +88,24 @@ void test()
 
 	//fout.close();
 
-	std::cout << Utils::GetNowTimeToString() << std::endl;
-	std::cout << Utils::GetNowTimeToString() << std::endl;
+	for (auto path : path_list)
+	{
 
-	std::cout << sizeof(size_t) << std::endl;
-	std::cout << sizeof(std::size_t) << std::endl;
+		std::cout << path << std::endl;
+	}
+
+	//std::cout << Utils::GetNowTimeToString() << std::endl;
+	//std::cout << Utils::GetNowTimeToString() << std::endl;
+
+	//std::cout << sizeof(size_t) << std::endl;
+	//std::cout << sizeof(std::size_t) << std::endl;
 }
 
 int main()
 {
 	run();
 	//test();
-	return 0;
+	//return 0;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

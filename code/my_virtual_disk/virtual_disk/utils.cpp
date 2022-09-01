@@ -31,6 +31,7 @@ std::deque<std::string> Utils::GetCommandParameters(std::string command)
 	std::deque<std::string> command_parameters;
 	boost::split(command_parameters, command, boost::is_space(), boost::token_compress_on);
 	return command_parameters;
+
 }
 
 std::vector<std::string> Utils::GetSplitPath(std::string _path)
@@ -70,7 +71,7 @@ int Utils::IsTargetInDir(MyDir * src_dir, std::string target)
 	{
 		return 0;
 	}
-	
+
 	if (child_iter->second->GetType() == FileType::DIR)
 	{
 		return 1;
@@ -83,7 +84,7 @@ int Utils::IsTargetInDir(MyDir * src_dir, std::string target)
 	{
 		return 3;
 	}
-	
+
 }
 
 MyDir * Utils::GetPathDir(std::vector<std::string> path_list, bool is_file)
@@ -165,6 +166,35 @@ MyDir * Utils::GetPathDir(std::vector<std::string> path_list, bool is_file)
 	//}
 
 	return current_dir;
+}
+
+bool Utils::WildCardMatching(std::string path, std::string input_path)
+{
+	auto m = path.size();
+	auto n = input_path.size();
+
+	std::vector < std::vector<size_t> > dp(m + 1, std::vector<std::size_t>(n + 1));
+
+	dp[0][0] = true;
+	for (size_t i = 1; i <= n; ++i) {
+		if (input_path[i - 1] == '*') {
+			dp[0][i] = true;
+		}
+		else {
+			break;
+		}
+	}
+	for (size_t i = 1; i <= m; ++i) {
+		for (size_t j = 1; j <= n; ++j) {
+			if (input_path[j - 1] == '*') {
+				dp[i][j] = dp[i][j - 1] | dp[i - 1][j];
+			}
+			else if (input_path[j - 1] == '?' || path[i - 1] == input_path[j - 1]) {
+				dp[i][j] = dp[i - 1][j - 1];
+			}
+		}
+	}
+	return dp[m][n];
 }
 
 //std::string Utils::GenerateDirectPath(MyVirtualDisk *virtual_disk)

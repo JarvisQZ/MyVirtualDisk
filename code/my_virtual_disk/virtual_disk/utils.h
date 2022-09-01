@@ -12,5 +12,6 @@ public:
 	bool static IsNameIllegal(std::string name);
 	int static IsTargetInDir(MyDir *src_dir, std::string target);
 	MyDir static *GetPathDir(std::vector<std::string> path_list, bool is_file);
+	bool static WildCardMatching(std::string path, std::string input_path);
 };
 

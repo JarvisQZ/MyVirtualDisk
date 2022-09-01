@@ -55,36 +55,6 @@ bool CopyCommand::GetFileNames(std::string path, std::vector<std::string>& files
 	return true;
 }
 
-//通配符
-bool CopyCommand::WildCardMatching(std::string path, std::string input_path)
-{
-	auto m = path.size();
-	auto n = input_path.size();
-
-	std::vector < std::vector<size_t> > dp(m + 1, std::vector<std::size_t>(n + 1));
-
-	dp[0][0] = true;
-	for (size_t i = 1; i <= n; ++i) {
-		if (input_path[i - 1] == '*') {
-			dp[0][i] = true;
-		}
-		else {
-			break;
-		}
-	}
-	for (size_t i = 1; i <= m; ++i) {
-		for (size_t j = 1; j <= n; ++j) {
-			if (input_path[j - 1] == '*') {
-				dp[i][j] = dp[i][j - 1] | dp[i - 1][j];
-			}
-			else if (input_path[j - 1] == '?' || path[i - 1] == input_path[j - 1]) {
-				dp[i][j] = dp[i - 1][j - 1];
-			}
-		}
-	}
-	return dp[m][n];
-}
-
 int CopyCommand::FindFileBase(std::string path)
 {
 	struct stat s;
@@ -144,7 +114,7 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 
 		for (auto file_name : all_file_name)
 		{
-			if (this->WildCardMatching(file_name, regex))
+			if (Utils::WildCardMatching(file_name, regex))
 			{
 				this->m_target_files.emplace_back(file_name);
 			}
@@ -252,7 +222,7 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 			char* buffer;
 			std::size_t size;
 
-			std::ifstream fin(this->m_target_dir + this->m_target_files[0], std::ios::in | std::ios::binary | std::ios::ate);
+			std::ifstream fin(this->m_target_dir + this->m_target_files.back(), std::ios::in | std::ios::binary | std::ios::ate);
 			size = static_cast<size_t>(fin.tellg()) + 1;
 
 			// try
@@ -360,6 +330,7 @@ bool CopyCommand::IsCommandCorrect()
 	}
 	else if (command_parameters[0][0] == '@' and command_parameters[1][0] != '@')
 	{
+		// 从真实磁盘到虚拟磁盘
 		std::vector<std::string> all_file;
 
 		auto real_path = command_parameters[0].substr(1, command_parameters[0].size() - 1);
@@ -375,13 +346,16 @@ bool CopyCommand::IsCommandCorrect()
 		}
 		else
 		{
-
+			regex = path_list.back();
+			real_path = real_path.substr(0, real_path.size() - regex.size());
+			this->m_target_dir = real_path;
+			this->GetFileNames(real_path, all_file);
 		}
 
 		for (auto file_name : all_file)
 		{
 			// 如果匹配成功
-			if (WildCardMatching(file_name, regex))
+			if (Utils::WildCardMatching(file_name, regex))
 			{
 				this->m_target_files.emplace_back(file_name);
 			}

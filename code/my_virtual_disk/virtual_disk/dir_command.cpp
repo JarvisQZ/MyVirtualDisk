@@ -59,6 +59,7 @@ void DirCommand::Execute(MyVirtualDisk * virtual_disk)
 				else
 				{
 					//TODO 打印文件
+					// 只打印文件信息
 				}
 			}
 		}

@@ -84,7 +84,7 @@ std::vector<std::string> MyDir::GetFileChildrenNameList() const
 
 	for (auto child : this->m_children)
 	{
-		if (child.second->GetType() == FileType::OTHER)
+		if (child.second->GetType() == FileType::OTHER or child.second->GetType() == FileType::SYMLINK)
 		{
 			result.emplace_back(child.first);
 		}

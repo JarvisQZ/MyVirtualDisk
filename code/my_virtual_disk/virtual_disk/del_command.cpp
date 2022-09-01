@@ -104,8 +104,25 @@ void DelCommand::Execute(MyVirtualDisk * virtual_disk)
 		{
 			// 最终结果是文件还是目录
 			auto all_children = current_dir->GetChildren();
+
+			auto all_file_name = current_dir->GetFileChildrenNameList();
+
+			std::vector<std::string> target_files;
+
+			auto regex = path_list.back();
+			boost::to_upper(regex);
+
+			for (auto file_name : all_file_name)
+			{
+				if (Utils::WildCardMatching(file_name, regex))
+				{
+					target_files.emplace_back(file_name);
+				}
+			}
+
 			auto child_iter = all_children.find(boost::to_upper_copy(path_list.back()));
-			if (child_iter == all_children.end())
+
+			if (target_files.size() == 0)
 			{
 				std::cout << "找不到 " << current_dir->GenerateDirectPath() << "\\" << path_list.back() << std::endl;
 				std::cout << std::endl;
@@ -113,15 +130,24 @@ void DelCommand::Execute(MyVirtualDisk * virtual_disk)
 			}
 			else
 			{
-				if (child_iter->second->GetType() == FileType::OTHER)
+				for (auto del_name : target_files)
 				{
-					// 如果最终结果是文件
-					auto del_file = static_cast<MyFile*>(child_iter->second);
+					auto delete_iter = all_children.find(boost::to_upper_copy(del_name));
+					auto del_file = static_cast<MyFile*>(delete_iter->second);
 					this->MyDelete(del_file);
-					std::cout << std::endl;
-
 				}
-				else if (child_iter->second->GetType() == FileType::DIR)
+				std::cout << std::endl;
+			}
+
+			if (!target_files.size() && child_iter == all_children.end())
+			{
+				std::cout << "找不到 " << current_dir->GenerateDirectPath() << "\\" << path_list.back() << std::endl;
+				std::cout << std::endl;
+				return;
+			}
+			else
+			{
+				if (!target_files.size() && child_iter->second->GetType() == FileType::DIR)
 				{
 					// 是目录 删除该目录下所有文件
 					std::string flag = "";
@@ -147,7 +173,7 @@ void DelCommand::Execute(MyVirtualDisk * virtual_disk)
 
 					}
 				}
-				else if (child_iter->second->GetType() == FileType::SYMLINK)
+				else if (!target_files.size() && child_iter->second->GetType() == FileType::SYMLINKD)
 				{
 					// TODO
 				}
