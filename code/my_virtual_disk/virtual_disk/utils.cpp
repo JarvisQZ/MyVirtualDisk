@@ -29,6 +29,30 @@ std::deque<std::string> my_split(std::string command)
 {
 	std::deque<std::string> command_parameters;
 	size_t pos;
+
+	// 预处理字符串
+	boost::replace_all(command, " ", "\n");
+	// 三层for 需要优化
+	for (size_t i = 0; i < command.length(); ++i)
+	{
+		if (command[i] == '"')
+		{
+			for (size_t j = i+1; j < command.length(); j++)
+			{
+				if (command[j] == '"')
+				{
+					for (size_t k = i; k < j; k++)
+					{
+						if (command[k] == '\n')
+						{
+							command[k] = ' ';
+						}
+					}
+				}
+			}
+		}
+	}
+
 	while (1)
 	{
 		boost::trim(command); // 去除两边空格
@@ -46,9 +70,10 @@ std::deque<std::string> my_split(std::string command)
 		}
 		else
 		{
-			pos = command.find(' ');
+			pos = command.find('\n');
 			//cout << TempCommandOrder.substr(0, pos) << "-s" << endl;
-			command_parameters.push_back(command.substr(0, pos));
+			auto patameter = boost::replace_all_copy(command.substr(0, pos), "\"", "");
+			command_parameters.push_back(patameter);
 			if (pos == std::string::npos)
 				break;
 			command = command.substr(pos, command.length());

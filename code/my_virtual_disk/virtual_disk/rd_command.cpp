@@ -81,7 +81,8 @@ void RdCommand::Execute(MyVirtualDisk * virtual_disk)
 			return;
 		}
 
-		run_delete_dir(target_dir);
+		//run_delete_dir(target_dir);
+		target_dir->DeleteDir(target_dir);
 		std::cout << std::endl;
 		return;
 
@@ -182,7 +183,8 @@ void RdCommand::Execute(MyVirtualDisk * virtual_disk)
 				return;
 			}
 
-			run_delete_dir_recursion(target_dir);
+			//run_delete_dir_recursion(target_dir);
+			target_dir->DeleteDirRecursion(target_dir);
 			std::cout << std::endl;
 			return;
 		}

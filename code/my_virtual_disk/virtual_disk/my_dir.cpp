@@ -5,6 +5,7 @@
 #include "my_file.h"
 #include "my_link_file.h"
 #include "my_link_dir.h"
+#include "my_virtual_disk.h"
 #include "file_type.h"
 
 
@@ -263,6 +264,65 @@ void MyDir::DeleteFileInDirRecursion(MyDir* targetdir)
 			targetdir->m_children.erase(dir.first);
 		}
 	}
+}
+
+void MyDir::DeleteDir(MyDir * targetdir)
+{
+	auto virtual_disk = MyVirtualDisk::GetInstance();
+
+	// 要删除的目录非空，返回错误信息
+	if (targetdir->GetChildren().size() != 0)
+	{
+		std::cout << "目录不是空的。" << std::endl;
+		std::cout << std::endl;
+		return;
+	}
+	if (targetdir == virtual_disk->GetCurrentDir())
+	{
+		std::cout << "另一个程序正在使用此文件，进程无法访问。" << std::endl;
+		std::cout << std::endl;
+		return;
+	}
+	auto parent_dir = targetdir->GetParentDir();
+	parent_dir->DeleteChild(targetdir->GetName());
+	delete targetdir;
+}
+
+void MyDir::DeleteDirRecursion(MyDir * targetdir)
+{
+	auto virtual_disk = MyVirtualDisk::GetInstance();
+
+	for (auto &_dir : targetdir->GetDirChildren())
+	{
+		this->DeleteDirRecursion(_dir.second);
+	}
+	if (targetdir == virtual_disk->GetCurrentDir())
+	{
+		std::cout << "另一个程序正在使用此文件，进程无法访问。" << std::endl;
+		std::cout << std::endl;
+		return;
+	}
+	auto parent_dir = targetdir->GetParentDir();
+	parent_dir->DeleteChild(targetdir->GetName());
+	delete targetdir;
+}
+
+void MyDir::DeleteDirRecursionForQuit(MyDir * targetdir)
+{
+	auto virtual_disk = MyVirtualDisk::GetInstance();
+
+	for (auto &_dir : targetdir->GetDirChildren())
+	{
+		this->DeleteDirRecursion(_dir.second);
+	}
+	if (targetdir == virtual_disk->GetCurrentDir())
+	{
+		delete targetdir;
+		return;
+	}
+	auto parent_dir = targetdir->GetParentDir();
+	parent_dir->DeleteChild(targetdir->GetName());
+	delete targetdir;
 }
 
 void MyDir::AddChild(MyFileBase * new_file)

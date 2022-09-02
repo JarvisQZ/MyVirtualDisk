@@ -102,6 +102,14 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 
 			if (current_dir == nullptr)
 			{
+				std::cout << "系统找不到指定的路径。" << std::endl;
+				std::cout <<
+					"已复制" <<
+					std::setfill(' ') <<
+					std::setw(10) <<
+					0 <<
+					" 个文件" << std::endl;
+				std::cout << std::endl;
 				return;
 			}
 
@@ -171,6 +179,13 @@ void CopyCommand::Execute(MyVirtualDisk * virtual_disk)
 			dst_dir = Utils::GetPathDir(path_list, false);
 			if (dst_dir == nullptr)
 			{
+				std::cout << "系统找不到指定的路径。" << std::endl;
+				std::cout <<
+					"已复制" <<
+					std::setfill(' ') <<
+					std::setw(10) <<
+					0 <<
+					" 个文件" << std::endl;
 				std::cout << std::endl;
 				return;
 			}

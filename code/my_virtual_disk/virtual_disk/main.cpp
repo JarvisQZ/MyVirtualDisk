@@ -59,7 +59,7 @@ void run()
 
 void test()
 {
-	std::string path_string = "MD 123 234/345 \"中文 空格\"";
+	std::string path_string = R"(md utils asdf/"中文 空格"/asdf asdf)";
 	auto path_list = Utils::GetCommandParameters(path_string);
 
 	for (auto path : path_list)
@@ -67,11 +67,6 @@ void test()
 		std::cout << path << std::endl;
 	}
 	std::cout << "123" << std::endl;
-
-	std::cout << std::setiosflags(std::ios::left) << std::setw(10) << 1000 << "\n";
-	std::cout << std::setiosflags(std::ios::right) << std::setw(10) << 1000 << "\n";
-	std::cout << std::setiosflags(std::ios::left) << std::setw(10) << 1000 << "\n";
-	std::cout << std::setiosflags(std::ios::right) << std::setw(10) << 1000 << std::endl;
 }
 
 int main()

@@ -59,19 +59,24 @@ MyVirtualDisk::MyVirtualDisk()
 MyVirtualDisk::~MyVirtualDisk()
 {
 
-	if (m_current_dir != m_root_dir)
-	{
-		if (m_root_dir != nullptr)
-		{
-			delete m_root_dir;
-		}
-		m_root_dir = nullptr;
-	}
+	this->m_root_dir->DeleteFileInDirRecursion(this->m_root_dir);
+	
+	this->SetCurrentDir(*this->m_root_dir);
+	this->m_root_dir->DeleteDirRecursionForQuit(this->m_root_dir);
 
-	if (m_current_dir != nullptr)
-	{
-		delete m_current_dir;
-	}
+	//if (m_current_dir != m_root_dir)
+	//{
+	//	if (m_root_dir != nullptr)
+	//	{
+	//		delete m_root_dir;
+	//	}
+	//	m_root_dir = nullptr;
+	//}
+
+	//if (m_current_dir != nullptr)
+	//{
+	//	delete m_current_dir;
+	//}
 	m_current_dir = nullptr;
 	m_root_dir = nullptr;
 
