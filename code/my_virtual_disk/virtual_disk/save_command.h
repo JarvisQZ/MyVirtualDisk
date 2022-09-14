@@ -10,10 +10,6 @@ public:
 
 	bool IsAbsolutePath(std::string path);
 
-	//void WriteFileStruct(MyFileBase* filestruct, std::ofstream& fout);
-	//void WriteFile(MyFile* targetfile, std::ofstream& fout);
-	//void WriteDir(MyDir* targetdir, std::ofstream& fout);
-
 	void WriteFileBase(MyFileBase *target_file_base, std::ofstream& fout);
 	void WriteFile(MyFile *target_file, std::ofstream& fout);
 	void WriteDir(MyDir *target_dir, std::ofstream& fout);

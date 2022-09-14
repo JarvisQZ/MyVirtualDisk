@@ -14,6 +14,8 @@ public:
 	char* GetContent() const;
 	void SetContent(char* content, std::size_t size);
 
+	virtual void MyDelete(bool is_force) override;
+
 
 private:
 	char *m_content = nullptr;

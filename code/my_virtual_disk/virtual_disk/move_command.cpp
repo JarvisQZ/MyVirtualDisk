@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "move_command.h"
 #include "utils.h"
+#include "Error.h"
 
 MoveCommand::MoveCommand()
 {
@@ -14,6 +15,17 @@ MoveCommand::MoveCommand(CommandType command_type, std::deque<std::string> comma
 
 MoveCommand::~MoveCommand()
 {
+}
+
+void PrintResult(std::size_t i)
+{
+	std::cout <<
+		"移动了" <<
+		std::setfill(' ') <<
+		std::setw(10) <<
+		i <<
+		" 个目录" << std::endl;
+	std::cout << std::endl;
 }
 
 void MoveCommand::Execute(MyVirtualDisk * virtual_disk)
@@ -32,8 +44,7 @@ void MoveCommand::Execute(MyVirtualDisk * virtual_disk)
 
 	if (src_dir == nullptr || dst_dir == nullptr)
 	{
-		std::cout << "系统找不到指定的文件。" << std::endl;
-		std::cout << std::endl;
+		Error::PrintErr(Error::FileNotFoundErr);
 		return;
 	}
 
@@ -45,73 +56,74 @@ void MoveCommand::Execute(MyVirtualDisk * virtual_disk)
 	int dst_flag = Utils::IsTargetInDir(dst_dir, dst_path_list.back());
 	if (!src_flag)
 	{
-		std::cout << "系统找不到指定的文件。" << std::endl;
+		Error::PrintErr(Error::FileNotFoundErr);
 		std::cout << std::endl;
 		return;
 	}
 
 	if (command_parameters.size() == 1)
 	{
-		std::cout <<
-			"移动了" <<
-			std::setfill(' ') <<
-			std::setw(10) <<
-			1 <<
-			" 个目录" << std::endl;
-		std::cout << std::endl;
+		PrintResult(1);
 		return;
 	}
-
+	std::string err;
 	if (this->m_is_cover)
 	{
-		if (dst_flag == 0)
+		auto src_ = src_dir->GetChildren().find(src_name_upper)->second;
+		src_->MyMove(dst_name, dst_dir, true, err);
+		if (!err.empty())
 		{
-			// 目标是空，直接修改指针指向
-			src_dir->GetChildren().find(src_name_upper)->second->SetName(dst_name);
-			// 在目标文件夹下添加源文件
-			dst_dir->AddChild(src_dir->GetChildren().find(src_name_upper)->second);
-			// 在源文件夹删除
-			src_dir->DeleteChild(src_name);
+			Error::PrintErr(err);
+			return;
 		}
-		else if (dst_flag == 1)
-		{
-			dst_dir = dst_dir->GetDirChildren().find(dst_name_upper)->second;
-			auto dst_dir_children = dst_dir->GetChildren();
-			if (dst_dir_children.find(src_name_upper) == dst_dir_children.end())
-			{
-				// 目标是空，直接修改指针指向
-				// 在目标文件夹下添加源文件
-				dst_dir->AddChild(src_dir->GetChildren().find(src_name_upper)->second);
-				// 在源文件夹删除
-				src_dir->DeleteChild(src_name);
-			}
-			else
-			{
-				// 覆盖目标文件夹下的同名文件，就是删除
-				delete dst_dir->GetChildren().find(src_name_upper)->second;
-				dst_dir->DeleteChild(src_name_upper);
-				// 在目标文件夹下添加源文件
-				dst_dir->AddChild(src_dir->GetChildren().find(src_name_upper)->second);
-				// 在源文件夹删除
-				src_dir->DeleteChild(src_name_upper);
-			}
-		}
-		else if (dst_flag == 2)
-		{
-			// 原文件改名
-			src_dir->GetChildren().find(src_name_upper)->second->SetName(dst_name);
-			// 覆盖目标文件夹下的同名文件，就是删除
-			delete dst_dir->GetChildren().find(dst_name_upper)->second;
-			dst_dir->DeleteChild(dst_name_upper);
-			// 在目标文件夹下添加源文件
-			dst_dir->AddChild(src_dir->GetChildren().find(src_name_upper)->second);
-			// 在源文件夹删除
-			src_dir->DeleteChild(src_name_upper);
-		}
-		else if (dst_flag == 3)
-		{
-			// TODO
-		}
+		//if (dst_flag == 0)
+		//{
+		//	// 目标是空，直接修改指针指向
+		//	src_dir->GetChildren().find(src_name_upper)->second->SetName(dst_name);
+		//	// 在目标文件夹下添加源文件
+		//	dst_dir->AddChild(src_dir->GetChildren().find(src_name_upper)->second);
+		//	// 在源文件夹删除
+		//	src_dir->DeleteChild(src_name);
+		//}
+		//else if (dst_flag == 1)
+		//{
+		//	dst_dir = dst_dir->GetDirChildren().find(dst_name_upper)->second;
+		//	auto dst_dir_children = dst_dir->GetChildren();
+		//	if (dst_dir_children.find(src_name_upper) == dst_dir_children.end())
+		//	{
+		//		// 目标是空，直接修改指针指向
+		//		// 在目标文件夹下添加源文件
+		//		dst_dir->AddChild(src_dir->GetChildren().find(src_name_upper)->second);
+		//		// 在源文件夹删除
+		//		src_dir->DeleteChild(src_name);
+		//	}
+		//	else
+		//	{
+		//		// 覆盖目标文件夹下的同名文件，就是删除
+		//		delete dst_dir->GetChildren().find(src_name_upper)->second;
+		//		dst_dir->DeleteChild(src_name_upper);
+		//		// 在目标文件夹下添加源文件
+		//		dst_dir->AddChild(src_dir->GetChildren().find(src_name_upper)->second);
+		//		// 在源文件夹删除
+		//		src_dir->DeleteChild(src_name_upper);
+		//	}
+		//}
+		//else if (dst_flag == 2)
+		//{
+		//	// 原文件改名
+		//	src_dir->GetChildren().find(src_name_upper)->second->SetName(dst_name);
+		//	// 覆盖目标文件夹下的同名文件，就是删除
+		//	delete dst_dir->GetChildren().find(dst_name_upper)->second;
+		//	dst_dir->DeleteChild(dst_name_upper);
+		//	// 在目标文件夹下添加源文件
+		//	dst_dir->AddChild(src_dir->GetChildren().find(src_name_upper)->second);
+		//	// 在源文件夹删除
+		//	src_dir->DeleteChild(src_name_upper);
+		//}
+		//else if (dst_flag == 3)
+		//{
+		//	// TODO
+		//}
 	}
 	else
 	{
@@ -205,8 +217,7 @@ bool MoveCommand::IsCommandCorrect()
 
 	if (command_parameters.size() < 1 or command_parameters.size() > 3)
 	{
-		std::cout << "命令语法不正确。" << std::endl;
-		std::cout << std::endl;
+		Error::PrintErr(Error::InvalidCommandErr);
 		return false;
 	}
 
@@ -214,14 +225,12 @@ bool MoveCommand::IsCommandCorrect()
 	{
 		if (boost::to_upper_copy(command_parameters[0]) == "/Y")
 		{
-			std::cout << "命令语法不正确。" << std::endl;
-			std::cout << std::endl;
+			Error::PrintErr(Error::InvalidCommandErr);
 			return false;
 		}
 		else if (boost::to_upper_copy(command_parameters[1]) == "/Y")
 		{
-			std::cout << "命令语法不正确。" << std::endl;
-			std::cout << std::endl;
+			Error::PrintErr(Error::InvalidCommandErr);
 			return false;
 		}
 		this->m_src_path = command_parameters[0];
@@ -231,8 +240,7 @@ bool MoveCommand::IsCommandCorrect()
 	{
 		if (boost::to_upper_copy(command_parameters[0]) != "/Y")
 		{
-			std::cout << "命令语法不正确。" << std::endl;
-			std::cout << std::endl;
+			Error::PrintErr(Error::InvalidCommandErr);
 			return false;
 		}
 		this->m_is_cover = true;

@@ -7,6 +7,7 @@
 #include "my_link_dir.h"
 #include "my_virtual_disk.h"
 #include "file_type.h"
+#include "Error.h"
 
 
 MyDir::MyDir()
@@ -343,11 +344,31 @@ void MyDir::AddChild(std::string name, MyFileBase * new_file, bool is_override)
 
 }
 
+void MyDir::MyDelete(bool is_force)
+{
+	this->GetParentDir()->DeleteChild(this->GetName());
+	this->SetParentDir(nullptr);
+	delete this;
+}
+
 void MyDir::DeleteChild(std::string name)
 {
 	// 把子文件从map中移除，并没有清理对象
 	boost::to_upper(name);
 	this->m_children.erase(this->m_children.find(name));
 	this->SetLastModifiedTime();
+}
+
+MyFileBase* MyDir::FindChild(std::string file_name)
+{
+	auto children_map = this->GetChildren();
+	auto new_name_upper = boost::to_upper_copy(file_name);
+	auto child_itr = children_map.find(new_name_upper);
+	// 找到了
+	if (child_itr == children_map.cend())
+	{
+		return nullptr;
+	}
+	return child_itr->second;
 }
 

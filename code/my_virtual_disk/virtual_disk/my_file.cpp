@@ -2,6 +2,7 @@
 #include "my_file.h"
 #include "my_file_base.h"
 #include "file_type.h"
+#include "my_dir.h"
 
 MyFile::MyFile()
 {
@@ -42,5 +43,12 @@ void MyFile::SetContent(char* content, std::size_t size)
 {
 	this->m_content = content;
 	this->SetSize(size);
+}
+
+void MyFile::MyDelete(bool is_force)
+{
+	this->GetParentDir()->DeleteChild(this->GetName());
+	this->SetParentDir(nullptr);
+	delete this;
 }
 

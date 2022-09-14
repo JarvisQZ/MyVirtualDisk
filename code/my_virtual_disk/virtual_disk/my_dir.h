@@ -33,7 +33,11 @@ public:
 	void AddChild(std::string name, MyFileBase* new_file);
 	void AddChild(std::string name, MyFileBase* new_file, bool is_override);
 
+	virtual void MyDelete(bool is_force) override;
+
 	void DeleteChild(std::string name);
+
+	MyFileBase* FindChild(std::string file_name);
 
 private:
 	std::map<std::string, MyFileBase *> m_children;

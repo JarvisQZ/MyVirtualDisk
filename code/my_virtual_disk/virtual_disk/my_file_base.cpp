@@ -3,6 +3,8 @@
 #include "my_file_base.h"
 #include "utils.h"
 #include "file_type.h"
+#include "my_dir.h"
+#include "Error.h"
 
 MyFileBase::MyFileBase()
 	:m_last_modified_time(Utils::GetNowTimeToString())
@@ -135,4 +137,66 @@ MyDir * MyFileBase::GetParentDir() const
 void MyFileBase::SetParentDir(MyDir *parent_dir)
 {
 	this->m_parent_dir = parent_dir;
+}
+
+void MyFileBase::MyDelete(bool force)
+{
+	this->GetParentDir()->DeleteChild(this->GetName());
+	this->SetParentDir(nullptr);
+	delete this;
+}
+
+void MyFileBase::MyMove(const std::string& dst_name, MyDir* dst_dir, bool force, std::string& res_)
+{
+	auto dst_name_upper = boost::to_upper_copy(dst_name);
+	auto dst_ = dst_dir->FindChild(dst_name);
+	if (force)
+	{
+		if (dst_)
+		{
+			delete dst_dir->GetChildren().find(dst_name_upper)->second;
+		}
+		this->GetParentDir()->DeleteChild(this->GetName());
+		this->SetName(dst_name);
+		dst_dir->AddChild(dst_name, this);
+	}
+	else
+	{
+		if (dst_)
+		{
+			std::string flag = "";
+			do
+			{
+				std::cout << "覆盖" << dst_dir->GenerateDirectPath() + "/" + dst_name << "吗?(Yes/No): ";
+				std::getline(std::cin, flag);
+				boost::to_upper(flag);
+			} while (flag[0] != 'N' && flag[0] != 'Y');
+			if (flag[0] == 'N')
+			{
+				// 取消操作
+				std::cout << std::endl;
+				return;
+			}
+			delete dst_dir->GetChildren().find(dst_name_upper)->second;
+		}
+		this->GetParentDir()->DeleteChild(this->GetName());
+		this->SetName(dst_name);
+		dst_dir->AddChild(dst_name, this);
+	}
+}
+
+void MyFileBase::MyRename(const std::string& new_name, std::string& res_)
+{
+	auto new_name_upper = boost::to_upper_copy(new_name);
+	auto children_map = this->GetParentDir()->GetChildren();
+	// 重名
+	if (children_map.find(new_name_upper) != children_map.cend())
+	{
+		res_ = Error::RenameErr;
+		return;
+	}
+
+	this->GetParentDir()->DeleteChild(this->GetName());
+	this->SetName(new_name);
+	this->GetParentDir()->AddChild(new_name, this);
 }

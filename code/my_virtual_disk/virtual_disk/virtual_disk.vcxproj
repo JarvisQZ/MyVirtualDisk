@@ -165,6 +165,7 @@
     <ClInclude Include="copy_command.h" />
     <ClInclude Include="del_command.h" />
     <ClInclude Include="dir_command.h" />
+    <ClInclude Include="error.h" />
     <ClInclude Include="file_type.h" />
     <ClInclude Include="load_command.h" />
     <ClInclude Include="md_command.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="copy_command.cpp" />
     <ClCompile Include="del_command.cpp" />
     <ClCompile Include="dir_command.cpp" />
+    <ClCompile Include="error.cpp" />
     <ClCompile Include="load_command.cpp" />
     <ClCompile Include="md_command.cpp" />
     <ClCompile Include="mklink_command.cpp" />

@@ -1,7 +1,5 @@
 #pragma once
-//#include "file_type.h"
 enum class FileType;
-//#include "my_dir.h"
 class MyDir;
 
 class MyFileBase
@@ -27,6 +25,10 @@ public:
 
 	MyDir *GetParentDir() const;
 	void SetParentDir(MyDir *parent_dir);
+
+	virtual void MyDelete(bool force);
+	virtual void MyMove(const std::string& dst_name, MyDir* dst_dir, bool force, std::string& res_);
+	virtual void MyRename(const std::string& new_name, std::string& res_);
 
 private:
 	std::size_t m_size = 0;
